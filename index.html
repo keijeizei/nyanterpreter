@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>LOLCODE Interpreter</title>
+</head>
+<body>
+	<input type="file" id="file-input" />
+	<button onclick="execute()">Execute</button>
+	<h3>Contents of the file:</h3>
+	<pre id="file-content"></pre>
+</body>
+<script src="lexemes.js"></script>
+<script src="grammar.js"></script>
+
+<script src="lexer.js"></script>
+<script src="syntaxAnalyzer.js"></script>
+<script src="parser.js"></script>
+
+<script src="execute.js"></script>
+<script src="script.js"></script>
+</html>
