@@ -152,7 +152,7 @@ class LexicalAnalyzer {
 					this.clearBuffer();
 				}
 				// character is a newline
-				else if (this.code[0] == "\n") {
+				else if (this.code[0] === "\n" || this.code[0] === "\r") {
 					// TLDR then a linebreak ends a multiline comment
 					if (this.buffer === "TLDR") {
 						is_multiline_comment = false;

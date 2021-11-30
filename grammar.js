@@ -96,6 +96,7 @@ class Abstraction {
 expression = new Abstraction("expression", []);
 boolean_operation = new Abstraction("boolean operation", []);
 code_block = new Abstraction("code block", []);
+no_dec_code_block = new Abstraction("no declaration code block", []);
 no_infinite_expression = new Abstraction("no infinite expression", []);
 
 literal = new Abstraction("literal", [
@@ -247,7 +248,7 @@ loop_condition = new Abstraction("loop condition", [
 ]);
 
 loop_statement = new Abstraction("loop statement", [
-	["IM_IN_YR", "LOOPIDENT", loop_condition, "LINEBREAK", code_block, "IM_OUTTA_YR", "LOOPIDENT"]
+	["IM_IN_YR", "LOOPIDENT", loop_condition, "LINEBREAK", no_dec_code_block, "IM_OUTTA_YR", "LOOPIDENT"]
 ]);
 
 switch_OMGWTF = new Abstraction("switch OMGWTF", [
@@ -256,10 +257,10 @@ switch_OMGWTF = new Abstraction("switch OMGWTF", [
 ]);
 
 switch_OMG = new Abstraction("switch OMG", [
-	["OMG", literal, "LINEBREAK", code_block, "GTFO", "LINEBREAK", "this"],
-	["OMG", literal, "LINEBREAK", code_block, "GTFO", "LINEBREAK"],
-	["OMG", literal, "LINEBREAK", code_block, "this"],
-	["OMG", literal, "LINEBREAK", code_block],
+	["OMG", literal, "LINEBREAK", no_dec_code_block, "GTFO", "LINEBREAK", "this"],
+	["OMG", literal, "LINEBREAK", no_dec_code_block, "GTFO", "LINEBREAK"],
+	["OMG", literal, "LINEBREAK", no_dec_code_block, "this"],
+	["OMG", literal, "LINEBREAK", no_dec_code_block],
 	["OMG", literal, "LINEBREAK", "this"]
 ]);
 
@@ -268,12 +269,12 @@ switch_case = new Abstraction("switch_case", [
 ]);
 
 else_statement = new Abstraction("else statement", [
-	["NO_WAI", "LINEBREAK", code_block, "OIC"],
+	["NO_WAI", "LINEBREAK", no_dec_code_block, "OIC"],
 	["OIC"]
 ]);
 
 if_statement = new Abstraction("if statement", [
-	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", code_block, else_statement]
+	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", no_dec_code_block, else_statement]
 ]);
 
 assignment = new Abstraction("assignment", [
@@ -315,6 +316,24 @@ statement = new Abstraction("statement", [
 	[switch_case],
 	["LINEBREAK"]
 ]);
+
+no_dec_statement = new Abstraction ("no_dec_statement", [
+	[assignment],
+	[cast],
+	[cast_assign],
+	[expression],
+	[if_statement],
+	[input],
+	[loop_statement],
+	[print],
+	[switch_case],
+	["LINEBREAK"]
+]);
+
+no_dec_code_block.rules = [
+	[no_dec_statement, "LINEBREAK", no_dec_code_block],
+	[no_dec_statement, "LINEBREAK"]
+];
 
 code_block.rules = [
 	[statement, "LINEBREAK", code_block],
