@@ -111,6 +111,23 @@ class LexicalAnalyzer {
 		}
 	}
 
+	/**
+	 * Replaces all LOLCODE's special characters with their JavaScript counterparts if they are in a YARN
+	 */
+	replaceSpecialCharacters() {
+		this.tokens = this.tokens.map(token => {
+			if(token[0] === "YARN") {
+				return [
+					token[0],
+					token[1].replace(/:\)|:>|:o|:"|::|:/gi, matched =>
+						special_characters[matched]
+					)
+				]
+			}
+			else return token;
+		});
+	}
+
 	start() {
 		var is_string = false;
 		var is_comment = false;
@@ -207,6 +224,7 @@ class LexicalAnalyzer {
 
 		// console.log("RAW TOKENS:", this.tokens)
 		this.merge();
+		this.replaceSpecialCharacters();
 		this.convertIdent();
 		this.cleanExcessLinebreaks();
 		console.log("FINAL TOKENS:");

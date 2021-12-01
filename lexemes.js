@@ -171,3 +171,17 @@ var loop_tokens = [
 	"IM_IN_YR",
 	"IM_OUTTA_YR",
 ];
+
+/**
+ * Object containing LOLCODE's special characters and their JavaScript counterparts
+ * 	The bell character (:o) is represented as \x07
+ *  Any excess : character is removed, since to write a literal :, :: must be typed
+ */
+var special_characters = {
+	":)": "\n",
+	":>": "\t",
+	":o": "\x07",
+	":\"": "\"",
+	"::": ":",
+	":": ""
+};
