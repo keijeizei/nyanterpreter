@@ -1,17 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+		#lexemeDiv{
+			overflow-y: scroll;
+			overflow-x: fixed;
+			height: 50vh;
+		}
+		#symbolTableDiv{
+			overflow-y: scroll;
+			overflow-x: fixed;
+			height: 50vh;
+		}
+ 
+</style>		
 <head>
+	<link href="style.css" rel="stylesheet"/>
+	<link href="codemirror-5.64.0/lib/codemirror.css" rel="stylesheet"/>
+	<link href="codemirror/theme/monokai.css" rel="stylesheet"/>
+	<script src="codemirror-5.64.0/lib/codemirror.js"></script>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>LOLCODE Interpreter</title>
+	<title>Nyanterpreter</title>
 </head>
-<body>
-	<input type="file" id="file-input" />
-	<button onclick="execute()">Execute</button>
-	<h3>Contents of the file:</h3>
-	<textarea id="file-content" name="file-content"></textarea>
-	
+<body style="background-color:powderblue;">
+	<div class="row" style="padding: 10px 10px 10px 10px;">
+		<div class = "container col s4 white">
+			<h5 align="center">Your LOLCODE</h5>
+			<input type="file" id="file-input" />
+			<textarea id="file-content" name="file-content" style="display: none;"></textarea>
+		</div>
+		<div id = "lexemeDiv" class = "container col s4 center white" style="padding: 10px 10px 10px 10px;">
+			<table style="background-color: black;">
+				<h5>LEXEMES</h5>
+			</table>
+			<table>
+				<thead>
+					<tr>
+						<th>Lexemes</th>
+						<th>Classification</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div id = "symbolTableDiv" class = "container col s4 center white" style="padding: 10px 10px 10px 10px;">
+			<h5>SYMBOL TABLE</h5>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Value</th>
+						<th>Type</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row" style="padding: 10px 10px 10px 10px;">
+		<center><button  class = "col s12 black btn" onclick="execute()">EXECUTE</button></center>
+	</div>
+	<h5>TERMINAL</h5>
+	<div class="row s12 white" style="padding: 10px 10px 10px 10px">
+	</div>
+</div>
+
+
+</div>
+
 </body>
 <script src="lexemes.js"></script>
 <script src="grammar.js"></script>

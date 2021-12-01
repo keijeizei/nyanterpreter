@@ -1,6 +1,17 @@
 // LOLCODE contents from file will go here
 var code_text = "";
 
+// codemirror invoker
+var editor = CodeMirror.fromTextArea(document.getElementById('file-content'), {
+	theme: "monokai",
+	lineNumbers: true
+})
+
+// codemirror's event listener for input change
+editor.on('change', editor => {
+	code_text = editor.doc.getValue()
+})
+
 function readSingleFile(e) {
 	var file = e.target.files[0];
 	if (!file) return;
@@ -14,7 +25,9 @@ function readSingleFile(e) {
 }
   
 function displaycode_text(code_text) {
-	document.getElementById("file-content").value = code_text;
+	var element = document.getElementById("file-content");
+	// element.value = code_text;
+	editor.getDoc().setValue(code_text);
 }
   
 document.getElementById("file-input").addEventListener("change", readSingleFile, false);
