@@ -7,6 +7,9 @@ var editor = CodeMirror.fromTextArea(document.getElementById('file-content'), {
 	lineNumbers: true
 })
 
+// set the codemirror size
+editor.setSize("100%", "75%");
+
 // codemirror's event listener for input change
 editor.on('change', editor => {
 	code_text = editor.doc.getValue()
@@ -25,10 +28,7 @@ function readSingleFile(e) {
 }
   
 function displaycode_text(code_text) {
-	var element = document.getElementById("file-content");
-	// element.value = code_text;
 	editor.getDoc().setValue(code_text);
-	console.log(code_text)
 }
   
 document.getElementById("file-input").addEventListener("change", readSingleFile, false);
