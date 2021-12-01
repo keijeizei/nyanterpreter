@@ -106,6 +106,7 @@ var token_to_classification = {
 	"O_RLY?": "If-Else Delimiter Keyword",
 	"PRODUKT_OF": "Multiplaction Operation Keyword",
 	"QUOSHUNT_OF": "Division Operation Keyword",
+	"R": "Variable Assignment Keyword",
 	"SMALLR OF": "Min Operation Keyword",
 	"SUM_OF": "Addition Operation Keyword",
 	"TLDR": "Comment Delimiter Keyword",

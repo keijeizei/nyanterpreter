@@ -12,7 +12,7 @@ function execute() {
 
 	var lexer = new LexicalAnalyzer(code_text);
 	lexer.start();
-
+    addTable();
 	if (list_of_tokens) {
 		var valid_syntax = syntaxAnalyzer(list_of_tokens);
 		if (valid_syntax) {
