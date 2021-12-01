@@ -14,8 +14,7 @@ function readSingleFile(e) {
 }
   
 function displaycode_text(code_text) {
-	var element = document.getElementById("file-content");
-	element.textContent = code_text;
+	document.getElementById("file-content").value = code_text;
 }
   
 document.getElementById("file-input").addEventListener("change", readSingleFile, false);
