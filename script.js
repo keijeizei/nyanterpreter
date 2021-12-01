@@ -28,6 +28,7 @@ function displaycode_text(code_text) {
 	var element = document.getElementById("file-content");
 	// element.value = code_text;
 	editor.getDoc().setValue(code_text);
+	console.log(code_text)
 }
   
 document.getElementById("file-input").addEventListener("change", readSingleFile, false);

@@ -9,9 +9,6 @@ function execute() {
 	last_index = 0;
 	tab_count = 0;
 	first_symbol = true
-	
-	// get code text from textbox
-	code_text = document.getElementById("file-content").value;
 
 	var lexer = new LexicalAnalyzer(code_text);
 	lexer.start();
