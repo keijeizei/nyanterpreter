@@ -117,14 +117,14 @@ function semanticAnalyzer(tokens) {
 					operand1 = buffer.pop(); // varident
 					operand2 = buffer.pop(); // possible initialization value
 
-					// TODO are duplicate declarations allowed?
-					if (symbol_table[operand1[1]]) {
-						console.log(`Error: variable ${operand1[1]} is already defined.`);
-						return;
-					}
-					// TODO this can be removed if duplicate are not allowed
+					// error if variable name is IT
 					if (operand1[1] === "IT") {
 						console.log(`Error: IT variable is reserved as an implicit variable.`);
+						return;
+					}
+					// error if variable is already declared
+					if (symbol_table[operand1[1]]) {
+						console.log(`Error: variable ${operand1[1]} is already defined.`);
 						return;
 					}
 
