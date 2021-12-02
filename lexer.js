@@ -235,7 +235,7 @@ class LexicalAnalyzer {
 			}
 			// ============== current character is a space or tab ==============
 
-			else if (this.tokens[this.tokens.length - 1][0] === "TLDR") {
+			else if (this.tokens[this.tokens.length - 1] && this.tokens[this.tokens.length - 1][0] === "TLDR") {
 				console.log("Error: TLDR must not be followed by a statement.");
 				return;
 			}
