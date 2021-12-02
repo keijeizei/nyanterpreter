@@ -1,4 +1,5 @@
-var list_of_tokens = [];
+var gui_tokens = [];
+var interpreter_tokens = [];
 
 class LexicalAnalyzer {
 	constructor(code) {
@@ -128,6 +129,27 @@ class LexicalAnalyzer {
 		});
 	}
 
+	/**
+	 * Get a version of the tokens without the linebreaks
+	 * This will be shown on the GUI lexemes table
+	 */
+	getGUITokens() {
+		gui_tokens = this.tokens.filter(token =>
+			token[0] !== "LINEBREAK"	
+		);
+	}
+
+	/**
+	 * Get a version of the tokens without the comments
+	 * This is still stored in this.tokens because it still needs to be cleaned by cleanExcessLinebreaks()
+	 * It will be stored later in the gloabl interpreter_tokens
+	 */
+	getInterpreterTokens() {
+		this.tokens = this.tokens.filter(token =>
+			comment_tokens.includes(token[0]) ? false : true
+		);
+	}
+
 	start() {
 		var is_string = false;
 		var is_comment = false;
@@ -146,12 +168,23 @@ class LexicalAnalyzer {
 
 			if (this.buffer === "BTW") {
 				is_comment = true;
-				// console.log(is_comment)
+
+				// push the BTW token
+				this.tokens.push(["BTW", null]);
+
+				this.skip(); // skip the space
+				this.clearBuffer();
 			}
 			if (this.buffer === "OBTW") {
 				// console.log(this.tokens)
 				if (this.tokens[this.tokens.length - 1][0] === "LINEBREAK") {
 					is_multiline_comment = true;
+
+					// push the OBTW token
+					this.tokens.push(["OBTW", null]);
+
+					this.skip(); // skip the space (or linebreak)
+					this.clearBuffer();
 				}
 				else {
 					console.log("Error: No statement before OBTW allowed");
@@ -161,25 +194,39 @@ class LexicalAnalyzer {
 
 			// current character is not a space
 			if (this.code[0] != " ") {
-				// character is a tab, analyze the buffer
+				// character is a tab
 				if (this.code[0] == "\t") {
-					valid_lexeme = this.tokenize(this.buffer);
+					// eat the tab if inside comment
+					if (is_comment || is_multiline_comment) {
+						this.eat();
+					}
+					// tokenize the buffer
+					else {
+						valid_lexeme = this.tokenize(this.buffer);
 
-					this.skip(); // skip the tab
-					this.clearBuffer();
+						this.skip(); // skip the tab
+						this.clearBuffer();
+					}
 				}
 				// character is a newline
 				else if (this.code[0] === "\n" || this.code[0] === "\r") {
 					// TLDR then a linebreak ends a multiline comment
-					if (this.buffer === "TLDR") {
+					// TLDR may contain leading tabs, so a regex without caret is used
+					if (this.buffer.match(/TLDR$/) && is_multiline_comment) {
 						is_multiline_comment = false;
+						this.tokens.push(["TLDR", null]);
+					}
+					else if (is_comment) {
+						this.tokens.push(["BTW_COMMENT", this.buffer]);
+					}
+					else if (is_multiline_comment) {
+						this.tokens.push(["OBTW_COMMENT", this.buffer]);
 					}
 					// tokenize the buffer
-					else if (!is_comment && !is_multiline_comment) {
+					else {
 						valid_lexeme = this.tokenize(this.buffer);
-						this.tokens.push(["LINEBREAK", null]);
 					}
-
+					this.tokens.push(["LINEBREAK", null]);
 					// linebreak automatically ends a BTW comment
 					is_comment = false;
 
@@ -197,7 +244,6 @@ class LexicalAnalyzer {
 			}
 			// current character is a space, tokenize the buffer
 			else {
-				// console.log("buffer contains:", this.buffer)
 				valid_lexeme = this.tokenize(this.buffer);
 
 				this.skip(); // skip the space
@@ -226,9 +272,15 @@ class LexicalAnalyzer {
 		this.merge();
 		this.replaceSpecialCharacters();
 		this.convertIdent();
+
+		this.getGUITokens();
+
+		this.getInterpreterTokens();
 		this.cleanExcessLinebreaks();
-		console.log("FINAL TOKENS:");
-		console.table(this.tokens);
-		list_of_tokens = this.tokens;
+
+		interpreter_tokens = this.tokens;
+
+		console.log("FINAL INTERPRETER TOKENS:");
+		console.table(interpreter_tokens);
 	}
 }

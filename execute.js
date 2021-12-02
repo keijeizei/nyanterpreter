@@ -1,6 +1,7 @@
 function execute() {
 	// reset global variables
-	list_of_tokens = [];
+	interpreter_tokens = [];
+	gui_tokens = [];
 	symbol_table = {};
 
 	expected = "";
@@ -13,10 +14,10 @@ function execute() {
 	var lexer = new LexicalAnalyzer(code_text);
 	lexer.start();
     addTable();
-	if (list_of_tokens) {
-		var valid_syntax = syntaxAnalyzer(list_of_tokens);
+	if (interpreter_tokens) {
+		var valid_syntax = syntaxAnalyzer(interpreter_tokens);
 		if (valid_syntax) {
-			semanticAnalyzer(list_of_tokens);
+			semanticAnalyzer(interpreter_tokens);
 		}
 	}
 }

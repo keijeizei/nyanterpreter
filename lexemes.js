@@ -73,7 +73,8 @@ var token_to_classification = {
 	"AN": "Operand Delimitier Keyword",
 	"ANY_OF": "OR Delimiter Operation Keyword",
 	"ALL_OF": "AND Delimiter Operation Keyword",
-	"BTW": "Line comment Keyword",
+	"BTW": "Line Comment Keyword",
+	"BTW_COMMENT": "Line Comment",
 	"BIGGR OF": "Max Operation Keyword",
 	"BOTH_SAEM": "Equal Operation Keyword",
 	"BOTH_OF": "AND Operation Keyword",
@@ -99,6 +100,7 @@ var token_to_classification = {
 	"NOOB": "Null Identifier",
 	"MOD_OF": "Modulo Operation Keyword",
 	"OBTW": "Comment Delimiter Keyword",
+	"OBTW_COMMENT": "Multi-line Comment",
 	"OIC": "Flow-Control Delimiter Keyword",
 	"OMG": "Case Keyword",
 	"OMGWTF": "Case-Default Keyword",
@@ -150,6 +152,17 @@ var multiword_pl_elements = [
 	new MultiWord("WON_OF", ["WON", "OF"]),
 	new MultiWord("YA_RLY", ["YA", "RLY"]),
 ];
+
+/**
+ * List of comment tokens used by the lexer
+ */
+var comment_tokens = [
+	"BTW",
+	"BTW_COMMENT",
+	"OBTW",
+	"OBTW_COMMENT",
+	"TLDR"
+]
 
 /**
  * List of conditional commands used by the parser
