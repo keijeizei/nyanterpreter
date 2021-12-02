@@ -157,7 +157,7 @@ class LexicalAnalyzer {
 		var valid_lexeme = true;
 
 		while (this.code.length) {
-			// console.log('buffer:', this.buffer)
+			console.log('buffer:', this.buffer, is_comment, this.buffer === "BTW")
 
 			if (this.buffer[0] === '"') {
 				is_string = true;
@@ -166,61 +166,56 @@ class LexicalAnalyzer {
 				is_string = false;
 			}
 
-			if (this.buffer === "BTW") {
-				is_comment = true;
-
-				// push the BTW token
-				this.tokens.push(["BTW", null]);
-
-				this.skip(); // skip the space
-				this.clearBuffer();
-			}
-			if (this.buffer === "OBTW") {
-				// console.log(this.tokens)
-				if (this.tokens[this.tokens.length - 1][0] === "LINEBREAK") {
-					is_multiline_comment = true;
-
-					// push the OBTW token
-					this.tokens.push(["OBTW", null]);
-
-					this.skip(); // skip the space (or linebreak)
-					this.clearBuffer();
-				}
-				else {
-					console.log("Error: No statement before OBTW allowed");
-					return;
-				}
-			}
-
-			// current character is not a space
-			if (this.code[0] != " ") {
+			// ============== current character is not a space or tab ==============
+			if (this.code[0] !== " " && this.code[0] !== "\t") {
 				// character is a tab
-				if (this.code[0] == "\t") {
-					// eat the tab if inside comment
-					if (is_comment || is_multiline_comment) {
-						this.eat();
-					}
-					// tokenize the buffer
-					else {
-						valid_lexeme = this.tokenize(this.buffer);
+				// if (this.code[0] == "\t") {
+				// 	// eat the tab if inside comment
+				// 	if (is_comment || is_multiline_comment) {
+				// 		this.eat();
+				// 	}
+				// 	// BTW followed by a 
+				// 	else if (this.buffer === "BTW") {
 
-						this.skip(); // skip the tab
-						this.clearBuffer();
-					}
-				}
+				// 	}
+				// 	// tokenize the buffer
+				// 	else {
+				// 		valid_lexeme = this.tokenize(this.buffer);
+
+				// 		this.skip(); // skip the tab
+				// 		this.clearBuffer();
+				// 	}
+				// }
 				// character is a newline
-				else if (this.code[0] === "\n" || this.code[0] === "\r") {
+				if (this.code[0] === "\n" || this.code[0] === "\r") {
 					// TLDR then a linebreak ends a multiline comment
 					// TLDR may contain leading tabs, so a regex without caret is used
-					if (this.buffer.match(/TLDR$/) && is_multiline_comment) {
-						is_multiline_comment = false;
-						this.tokens.push(["TLDR", null]);
+					if (this.buffer.match(/TLDR$/)) {
+						if(is_multiline_comment) {
+							is_multiline_comment = false;
+							this.tokens.push(["TLDR", null]);
+						}
+						else {
+							console.log("Error: Matching OBTW for TLDR not found.");
+							return;
+						}
 					}
 					else if (is_comment) {
 						this.tokens.push(["BTW_COMMENT", this.buffer]);
 					}
 					else if (is_multiline_comment) {
 						this.tokens.push(["OBTW_COMMENT", this.buffer]);
+					}
+					// BTW immediately followed by a LINEBREAK
+					else if (this.buffer === "BTW") {
+						this.tokens.push(["BTW", null]);
+						this.clearBuffer();
+					}
+					// OBTW immediately followed by a LINEBREAK
+					else if (this.buffer === "OBTW") {
+						is_multiline_comment = true;
+						this.tokens.push(["OBTW", null]);
+						this.clearBuffer();
 					}
 					// tokenize the buffer
 					else {
@@ -236,6 +231,49 @@ class LexicalAnalyzer {
 				// character is not whitespace, eat it
 				else {
 					this.eat();
+				}
+			}
+			// ============== current character is a space or tab ==============
+
+			else if (this.tokens[this.tokens.length - 1][0] === "TLDR") {
+				console.log("Error: TLDR must not be followed by a statement.");
+				return;
+			}
+			// don't detect BTW and OBTW inside comments
+			else if (!is_comment && this.buffer === "BTW") {
+				is_comment = true;
+console.log(is_comment)
+
+				// push the BTW token
+				this.tokens.push(["BTW", null]);
+
+				this.skip(); // skip the space
+				this.clearBuffer();
+			}
+			else if (!is_comment && this.buffer === "OBTW") {
+				// console.log(this.tokens)
+				if (this.tokens[this.tokens.length - 1][0] === "LINEBREAK") {
+					is_multiline_comment = true;
+
+					// push the OBTW token
+					this.tokens.push(["OBTW", null]);
+
+					this.skip(); // skip the space (or linebreak)
+					this.clearBuffer();
+				}
+				else {
+					console.log("Error: No statement before OBTW allowed");
+					return;
+				}
+			}
+			else if (this.buffer === "TLDR") {
+				if (is_multiline_comment) {
+					is_multiline_comment = false;
+					this.tokens.push(["TLDR", null]);
+				}
+				else {
+					console.log("Error: Matching OBTW for TLDR not found.");
+					return;
 				}
 			}
 			// current character is a space but is inside a string or comment
