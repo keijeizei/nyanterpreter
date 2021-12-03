@@ -211,9 +211,23 @@ class LexicalAnalyzer {
 					}
 					// OBTW immediately followed by a LINEBREAK
 					else if (this.buffer === "OBTW") {
-						is_multiline_comment = true;
-						this.tokens.push(["OBTW", null]);
-						this.clearBuffer();
+						// is_multiline_comment = true;
+						// this.tokens.push(["OBTW", null]);
+						// this.clearBuffer();
+
+						if (this.tokens[this.tokens.length - 1][0] === "LINEBREAK") {
+							is_multiline_comment = true;
+
+							// push the OBTW token
+							this.tokens.push(["OBTW", null]);
+
+							this.skip(); // skip the space (or linebreak)
+							this.clearBuffer();
+						}
+						else {
+							console.log("Error: No statement before OBTW allowed");
+							return;
+						}
 					}
 					// tokenize the buffer
 					else {
