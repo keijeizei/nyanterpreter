@@ -157,35 +157,33 @@ class LexicalAnalyzer {
 		var valid_lexeme = true;
 
 		while (this.code.length) {
-			console.log('buffer:', this.buffer, is_comment, this.buffer === "BTW")
+			console.log('buffer:', this.buffer)
 
-			if (this.buffer[0] === '"') {
-				is_string = true;
-			}
-			if (this.buffer[this.buffer.length - 1] === '"') {
-				is_string = false;
+			if (this.code[0] === '"') {
+				// ending " detected, end the string and tokenize
+				if (is_string) {
+					if (this.buffer[this.buffer.length - 1] !== ":") {
+						is_string = false;
+
+						this.eat();
+						valid_lexeme = this.tokenize(this.buffer);
+						this.clearBuffer();
+
+						// skip if the next character is space or tab
+						if(this.code[0] === " " || this.code[0] === "\t") {
+							this.skip();
+						}
+						continue;
+					}
+				}
+				// starting " detected
+				else {
+					is_string = true;
+				}
 			}
 
 			// ============== current character is not a space or tab ==============
 			if (this.code[0] !== " " && this.code[0] !== "\t") {
-				// character is a tab
-				// if (this.code[0] == "\t") {
-				// 	// eat the tab if inside comment
-				// 	if (is_comment || is_multiline_comment) {
-				// 		this.eat();
-				// 	}
-				// 	// BTW followed by a 
-				// 	else if (this.buffer === "BTW") {
-
-				// 	}
-				// 	// tokenize the buffer
-				// 	else {
-				// 		valid_lexeme = this.tokenize(this.buffer);
-
-				// 		this.skip(); // skip the tab
-				// 		this.clearBuffer();
-				// 	}
-				// }
 				// character is a newline
 				if (this.code[0] === "\n" || this.code[0] === "\r") {
 					// TLDR then a linebreak ends a multiline comment

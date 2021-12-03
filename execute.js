@@ -10,9 +10,10 @@ function execute() {
 	last_index = 0;
 	tab_count = 0;
 	first_symbol = true
-
+	
 	var lexer = new LexicalAnalyzer(code_text);
 	lexer.start();
+	removeTable();
     addTable();
 	if (interpreter_tokens) {
 		var valid_syntax = syntaxAnalyzer(interpreter_tokens);
@@ -20,4 +21,8 @@ function execute() {
 			semanticAnalyzer(interpreter_tokens);
 		}
 	}
+
+
+
 }
+

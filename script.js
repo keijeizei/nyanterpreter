@@ -32,14 +32,17 @@ function addTable() {
 	var myTableDiv = document.getElementById("lexemeDiv");
 
 	var table = document.createElement('TABLE');
+	table.id="tableID"
 	table.border = '1';
 
 	var tableBody = document.createElement('TBODY');
+	tableBody.id = 'tbodyID'
 	table.appendChild(tableBody);
 
 
 	for (var i = 0; i < gui_tokens.length; i++) {
 		var tr = document.createElement('TR');
+		tr.id="trID"
 		tableBody.appendChild(tr);
 		var td = document.createElement('TD');
 		td.width= '50%'
@@ -59,6 +62,15 @@ function addTable() {
 	}
 	
 	myTableDiv.appendChild(table);
+}
+function removeTable(){
+	var table = document.getElementById("tableID")
+	var tableBody = document.getElementById("tbodyID")
+	if(table !== null){
+		table.remove(tableBody);
+	}else{
+		return
+	}
 }
 
 function displaycode_text(code_text) {
