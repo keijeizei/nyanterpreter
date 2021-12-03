@@ -49,8 +49,8 @@ class LexicalAnalyzer {
 				return true;
 			}
 		}
-		console.log("Error: Unknown lexeme: ", lexeme);
-		return false
+		terminal.error("Error: Unknown lexeme: ", lexeme);
+		return false;
 	}
 
 	/**

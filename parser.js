@@ -166,6 +166,35 @@ function semanticAnalyzer(tokens) {
 					symbol_table[operand1[1]]["type"] = operand2[0];
 					symbol_table[operand1[1]]["value"] = operand2[1];
 					break;
+
+				case "VISIBLE":
+					while (buffer.length) {
+						operands.push(buffer.pop());
+					}
+
+					for (var i = 0; i < operands.length; i++) {
+						if (operands[i][0] === "VARIDENT") {
+							if (!symbol_table[operands[i][1]]) {
+								console.log(`Error: variable ${operands[i][1]} is not defined.`);
+								return;
+							}
+							operands[i] = [
+								symbol_table[operands[i][1]]["type"],
+								symbol_table[operands[i][1]]["value"]
+							];
+						}
+					}
+
+					for (var i = 0; i < operands.length; i++) {
+						if (operands[i][0] === "TROOF") {
+							operands[i][1] = operands[i][1] ? "WIN" : "FAIL";
+						}
+						terminal.append(operands[i][1]);
+					}
+
+					terminal.append("\n"); // TODO suppress this when ! is detected
+					break;
+
 				// arithmetic operations
 				case "SUM_OF":
 				case "DIFF_OF":

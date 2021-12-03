@@ -9,7 +9,9 @@ function execute() {
 	error_index = 0;
 	last_index = 0;
 	tab_count = 0;
-	first_symbol = true
+	first_symbol = true;
+
+	terminal.clear();
 	
 	var lexer = new LexicalAnalyzer(code_text);
 	lexer.start();

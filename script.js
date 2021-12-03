@@ -15,6 +15,9 @@ editor.on('change', editor => {
 	code_text = editor.doc.getValue()
 })
 
+// terminal object
+var terminal = new Terminal();
+
 function readSingleFile(e) {
 	var file = e.target.files[0];
 	if (!file) return;
