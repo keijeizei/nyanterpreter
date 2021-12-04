@@ -294,7 +294,8 @@ print_content = new Abstraction("print_content", [
 ]);
 
 print = new Abstraction("print", [
-	["VISIBLE", print_content]
+	["VISIBLE", print_content, "!"],
+	["VISIBLE", print_content],
 ]);
 
 declaration = new Abstraction("declaration", [

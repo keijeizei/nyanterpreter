@@ -49,7 +49,7 @@ class LexicalAnalyzer {
 				return true;
 			}
 		}
-		terminal.error("Error: Unknown lexeme: ", lexeme);
+		terminal.error(`Error: Unknown lexeme: ${lexeme}`);
 		return false;
 	}
 
@@ -204,6 +204,9 @@ class LexicalAnalyzer {
 					else if (is_multiline_comment) {
 						this.tokens.push(["OBTW_COMMENT", this.buffer]);
 					}
+					else if (is_string) {
+						terminal.error(`Error: Unterminated string literal: ${this.buffer}`);
+					}
 					// BTW immediately followed by a LINEBREAK
 					else if (this.buffer === "BTW") {
 						this.tokens.push(["BTW", null]);
@@ -211,23 +214,29 @@ class LexicalAnalyzer {
 					}
 					// OBTW immediately followed by a LINEBREAK
 					else if (this.buffer === "OBTW") {
-						// is_multiline_comment = true;
-						// this.tokens.push(["OBTW", null]);
-						// this.clearBuffer();
-
 						if (this.tokens[this.tokens.length - 1][0] === "LINEBREAK") {
 							is_multiline_comment = true;
 
 							// push the OBTW token
 							this.tokens.push(["OBTW", null]);
-
-							this.skip(); // skip the space (or linebreak)
-							this.clearBuffer();
 						}
 						else {
 							console.log("Error: No statement before OBTW allowed");
 							return;
 						}
+					}
+					// buffer contains a comma, push a soft LINEBREAK
+					else if (this.buffer[this.buffer.length - 1] === ",") {
+						valid_lexeme = this.tokenize(this.buffer.slice(0, -1));	// remove the comma
+
+						this.tokens.push(["LINEBREAK", null]);
+					}
+					// buffer contains an exclamation, push a !
+					else if (this.buffer[this.buffer.length - 1] === "!") {
+						valid_lexeme = this.tokenize(this.buffer.slice(0, -1));	// remove the exclamation
+
+						this.tokens.push(["!", null]);
+						this.tokens.push(["LINEBREAK", null]);
 					}
 					// tokenize the buffer
 					else {
@@ -254,7 +263,6 @@ class LexicalAnalyzer {
 			// don't detect BTW and OBTW inside comments
 			else if (!is_comment && this.buffer === "BTW") {
 				is_comment = true;
-console.log(is_comment)
 
 				// push the BTW token
 				this.tokens.push(["BTW", null]);
@@ -291,6 +299,24 @@ console.log(is_comment)
 			// current character is a space but is inside a string or comment
 			else if (is_string || is_comment || is_multiline_comment) {
 				this.eat();
+			}
+			// buffer contains a comma, push a soft LINEBREAK
+			else if (this.buffer[this.buffer.length - 1] === ",") {
+				valid_lexeme = this.tokenize(this.buffer.slice(0, -1));	// remove the comma
+
+				this.tokens.push(["LINEBREAK", null]);
+
+				this.skip(); // skip the space
+				this.clearBuffer();
+			}
+			// buffer contains an exclamation, push a !
+			else if (this.buffer[this.buffer.length - 1] === "!") {
+				valid_lexeme = this.tokenize(this.buffer.slice(0, -1));	// remove the exclamation
+
+				this.tokens.push(["!", null]);
+
+				this.skip(); // skip the space
+				this.clearBuffer();
 			}
 			// current character is a space, tokenize the buffer
 			else {

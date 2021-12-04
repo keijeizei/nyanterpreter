@@ -104,6 +104,7 @@ function semanticAnalyzer(tokens) {
 					buffer.push(current_token);
 					return_to_IT = true;
 					break;
+				case "!":
 				case "LOOPIDENT":
 				case "UPPIN_YR":
 				case "NERFIN_YR":
@@ -185,14 +186,23 @@ function semanticAnalyzer(tokens) {
 						}
 					}
 
+					var suppressNewline = false;
 					for (var i = 0; i < operands.length; i++) {
+						console.log(operands)
+						if(i === operands.length - 1 && operands[i][0] === "!") {
+							suppressNewline = true;
+							break;
+						}
+
 						if (operands[i][0] === "TROOF") {
 							operands[i][1] = operands[i][1] ? "WIN" : "FAIL";
 						}
 						terminal.append(operands[i][1]);
 					}
 
-					terminal.append("\n"); // TODO suppress this when ! is detected
+					if (!suppressNewline) {
+						terminal.append("\n");
+					}
 					break;
 
 				// arithmetic operations
