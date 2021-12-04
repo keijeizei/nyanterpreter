@@ -159,29 +159,6 @@ class LexicalAnalyzer {
 		while (this.code.length) {
 			console.log('buffer:', this.buffer)
 
-			if (this.code[0] === '"') {
-				// ending " detected, end the string and tokenize
-				if (is_string) {
-					if (this.buffer[this.buffer.length - 1] !== ":") {
-						is_string = false;
-
-						this.eat();
-						valid_lexeme = this.tokenize(this.buffer);
-						this.clearBuffer();
-
-						// skip if the next character is space or tab
-						if(this.code[0] === " " || this.code[0] === "\t") {
-							this.skip();
-						}
-						continue;
-					}
-				}
-				// starting " detected
-				else {
-					is_string = true;
-				}
-			}
-
 			// ============== current character is not a space or tab ==============
 			if (this.code[0] !== " " && this.code[0] !== "\t") {
 				// character is a newline
@@ -248,6 +225,30 @@ class LexicalAnalyzer {
 
 					this.skip();	// skip the newline
 					this.clearBuffer();
+				}
+				// double quotes outside of comment
+				else if (this.code[0] === '"' && !(is_comment || is_multiline_comment)) {
+					// ending " detected, end the string and tokenize
+					if (is_string) {
+						if (this.buffer[this.buffer.length - 1] !== ":") {
+							is_string = false;
+
+							this.eat();
+							valid_lexeme = this.tokenize(this.buffer);
+							this.clearBuffer();
+
+							// skip if the next character is space or tab
+							if(this.code[0] === " " || this.code[0] === "\t") {
+								this.skip();
+							}
+							// continue;
+						}
+					}
+					// starting " detected
+					else {
+						is_string = true;
+						this.eat();
+					}
 				}
 				// character is not whitespace, eat it
 				else {

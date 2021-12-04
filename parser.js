@@ -22,7 +22,14 @@ function isInteger(n) {
 	return Number(n) === n && n % 1 === 0;
 }
 
-function semanticAnalyzer(tokens) {
+/**
+ * Main semantic analyzer which runs the commands.
+ * Function calls are done by calling semanticAnalyzer again.
+ * @param tokens - The tokens to be executed
+ * @param function_name - The function's function name if it was invoked by a function, null if it is the main function
+ * @param args - The function's arguments, null if it is the main function
+ */
+function semanticAnalyzer(tokens, function_name, args) {
 	var index = 0;				// current index in the code
 	var prev_index = 0;			// the previous index
 	var stack = [];				// main stack where line tokens get pushed
@@ -41,6 +48,18 @@ function semanticAnalyzer(tokens) {
 		"type": "NOOB",
 		"value": null
 	}
+
+	if(function_name) {			// add the argments if function call
+		symbol_table = {
+			symbol_table,
+			...args
+		}
+	}
+
+	var function_table = [];		// list of all functions
+	var function_skip = false;		// skips a function definition
+	var function_identifier = null;	// the name of the function that is skipping
+
 	/*
 	condition_stack will contain the stack of IF and SWITCH calls to support nesting
 	It will contain objects of this format:
@@ -83,9 +102,14 @@ function semanticAnalyzer(tokens) {
 			if (condition_stack[csd]["skip"]) continue;
 		}
 
-		// ignore the loop skip if command is IM IN YR/IM OUTTA YR
+		// skip all commands except loop commands when loop_skip is enabled
 		if (lsd > -1 && !loop_tokens.includes(stack[0][0])) {
 			if (loop_stack[lsd]["skip"]) continue;
+		}
+
+		// skip all commands except IF_U_SAY_SO when function_skip is enabled
+		if (function_skip && stack[0][0] !== "IF_U_SAY_SO") {
+			continue;
 		}
 
 		while (stack.length) {
@@ -113,7 +137,7 @@ function semanticAnalyzer(tokens) {
 					buffer.push(current_token);
 					break;
 
-				// =============== COMMANDS ===============
+				// ============================== COMMANDS ==============================
 				case "I_HAS_A":
 					operand1 = buffer.pop(); // varident
 					operand2 = buffer.pop(); // possible initialization value
@@ -668,6 +692,72 @@ function semanticAnalyzer(tokens) {
 						console.table(loop_stack)
 						break;
 					}
+					break;
+				
+				case "HOW_IZ_I":
+					/*
+					function_identifier = buffer.pop();
+					get all varidents in buffer
+
+					create an args_list [var1, var2, var3]
+
+					function_table[function_identifier] = {
+						args_list,
+						start_index,
+						end_index = null
+					};
+
+					function_skip = true;
+					*/
+
+					break;
+
+				case "IF_U_SAY_SO":
+					/*
+					function_skip = false;
+					function_table[function_identifier]["end_index"] = index; // or index - 1 cuz of slice
+					
+					function_identifier = null;
+					*/
+					break;
+				
+				case "I IZ":
+					/*
+
+					var function_to_be_called = buffer.pop()
+
+					get all the values from the buffer
+					store to var args_values
+
+
+					var args_to_be_passed = {}
+
+					function_table[function_to_be_called][args_list].forEach((key, i) => 
+						args_to_be_passed[key] = args_values[i]
+					);
+
+					var return_value = semanticAnalyzer(
+						tokens.slice(
+							function_table[function_to_be_called]["start_index"],
+							function_table[function_to_be_called]["end_index"]
+						),
+						function_to_be_called,
+						args_to_be_passed
+					);
+
+					if(return_value) {
+						buffer.push(return_value);
+					}
+					*/
+					break;
+
+				case "FOUND_YR":
+					/*
+					// variable name to be returned
+					operand1 = buffer.pop()
+
+					return [symbol_table[operand1]["type"], symbol_table[operand1]["value"]]
+					*/
 					break;
 			}
 			// console.log(csd);
