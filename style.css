@@ -3,8 +3,16 @@ html {
   font-family: "Roboto", sans-serif;
   font-weight: normal;
   color: rgba(0, 0, 0, 0.87);
+	height: 100%;
+
 }
- h5 {
+
+body {
+	margin: 0;
+	height: 100%;
+}
+
+h5 {
   font-weight: 400;
   line-height: 1.1;
   font-size: 1.64rem;
@@ -67,8 +75,49 @@ tbody {
   letter-spacing: .5px;
   transition: .2s ease-out;
   cursor: pointer;
+  width:100%;
 }
+.grid {
+	display: grid;
+	grid-column-gap: 10px;
+	/* grid-template-columns: 32vw 32vw 32vw;
+	grid-template-rows: 60vh 5vh 35vh; */
+	justify-content: space-between;
+	grid-template-columns: minmax(500px, 1fr) 1fr 1fr; 
+	grid-template-rows: 1fr 90px 1fr; 
+	gap: 0px 0px; 
+	grid-template-areas: 
+    "item1 item2 item3"
+    "item4 item4 item4"
+    "item5 item5 item5"; 
 
+	box-sizing: border-box;
+	height: 100%;
+	padding: 10px;
+	/* border: 1px solid blue !important; */
+}
+.item1{
+	grid-area: item1;
+	/* border: 1px solid red !important; */
+	padding: 10px;
+}
+.item2{
+	grid-area: item2;
+	/* border: 1px solid red !important; */
+}
+.item3{
+	grid-area: item3;
+	/* border: 1px solid red !important; */
+}
+.item4{
+	grid-area: item4;
+	/* border: 1px solid green; */
+	padding: 10px;
+}
+.item5{
+	grid-area: item5;
+	/* border: 1px solid purple; */
+}
 .container {
   margin: 0 auto;
   max-width: 1280px;
@@ -77,45 +126,6 @@ tbody {
  border-style: solid;
  border-color: powderblue;
  border-radius: 10px;
-}
-
-
-.row .col.s4 {
-  width: 33.3333333333%;
-  margin-left: auto;
-  left: auto;
-  right: auto;
-}
-
-.row .col.offset-s4 {
-  margin-left: 33.3333333333%;
-}
-
-.row .col.pull-s4 {
-  right: 33.3333333333%;
-}
-
-.row .col.push-s4 {
-  left: 33.3333333333%;
-}
-
-.row .col.s12 {
-  width: 100%;
-  margin-left: auto;
-  left: auto;
-  right: auto;
-}
-
-.row .col.offset-s12 {
-  margin-left: 100%;
-}
-
-.row .col.pull-s12 {
-  right: 100%;
-}
-
-.row .col.push-s12 {
-  left: 100%;
 }
 
 .white {
@@ -128,27 +138,4 @@ tbody {
 
 .center{
   text-align: center;
-}
-
-.row {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px;
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.row .col {
-  float: left;
-  box-sizing: border-box;
-  padding: 0 0.75rem;
-  min-height: 1px;
-}
-
-.row .col[class*="push-"], .row .col[class*="pull-"] {
-  position: relative;
 }

@@ -43,15 +43,20 @@ function addTable() {
 	table.appendChild(tableBody);
 
 
-	for (var i = 0; i < gui_tokens.length; i++) {
+for (var i = 0; i < gui_tokens.length; i++) {
 		var tr = document.createElement('TR');
 		tr.id="trID"
 		tableBody.appendChild(tr);
 		var td = document.createElement('TD');
 		td.width= '50%'
-		if (gui_tokens[i][0] == "VARIDENT" || gui_tokens[i][0] == "NUMBR" || gui_tokens[i][0] == "NUMBAR" || gui_tokens[i][0] == "YARN" || gui_tokens[i][0] == "LOOPIDENT" || gui_tokens[i][0] == "BTW_COMMENT" || gui_tokens[i][0] == "OBTW_COMMENT"){
+		if (gui_tokens[i][0] == "VARIDENT" || gui_tokens[i][0] == "NUMBR" || gui_tokens[i][0] == "NUMBAR" || gui_tokens[i][0] == "LOOPIDENT" || gui_tokens[i][0] == "BTW_COMMENT" || gui_tokens[i][0] == "OBTW_COMMENT" || gui_tokens[i][0] == "TYPE"){
 			td.appendChild(document.createTextNode(gui_tokens[i][1]));
-		}else{
+		}else if (gui_tokens[i][0] == "YARN" ){
+            td.appendChild(document.createTextNode('"' + gui_tokens[i][1] + '"'));
+        }else if ( gui_tokens[i][0] == "TROOF"){
+            if (gui_tokens[i][1] == true) { td.appendChild(document.createTextNode("WIN"))}
+            else if(gui_tokens[i][1] == false) { td.appendChild(document.createTextNode("FAIL"))}
+        }else{
  			td.appendChild(document.createTextNode(gui_tokens[i][0].replace(/_/g," ")));
 		}
 		tr.appendChild(td);
@@ -61,8 +66,6 @@ function addTable() {
 		tr.appendChild(td2);
 		td2.appendChild(document.createTextNode(token_to_classification[gui_tokens[i][0]]));
         tr.appendChild(td2);
-
-		
 		
 	}
 	
@@ -93,13 +96,21 @@ function addTable() {
 		var symbolTabletd2 = document.createElement('TD');
 		symbolTabletd2.width= '50%'
 		symbolTabletr.appendChild(symbolTabletd2)
-		symbolTabletd2.appendChild(document.createTextNode(symbol_table[key].type));
+        if (symbol_table[key].value == true) {
+            symbolTabletd2.appendChild(document.createTextNode("WIN"));
+        } else if (symbol_table[key].value == false){
+            symbolTabletd2.appendChild(document.createTextNode("LOSE"));
+        } else if (symbol_table[key].value == null){
+            symbolTabletd2.appendChild(document.createTextNode("NOOB"));
+        } else {
+            symbolTabletd2.appendChild(document.createTextNode(symbol_table[key].value));
+        }
 		symbolTabletr.appendChild(symbolTabletd2);
 
 		var symbolTabletd3 = document.createElement('TD');
 		symbolTabletd3.width= '50%'
 		symbolTabletr.appendChild(symbolTabletd3)
-		symbolTabletd3.appendChild(document.createTextNode(symbol_table[key].value));
+		symbolTabletd3.appendChild(document.createTextNode(symbol_table[key].type));
 		symbolTabletr.appendChild(symbolTabletd3);
 				
 	}
@@ -123,3 +134,4 @@ function displaycode_text(code_text) {
 }
   
 document.getElementById("file-input").addEventListener("change", readSingleFile, false);
+

@@ -69,6 +69,15 @@ function semanticAnalyzer(tokens, function_name, args) {
 		}
 	}
 
+	/*
+	function_table will contain all function definitions in the code
+	It will contain properties of this format:
+	[function_identifier] = {
+		"args_list": [],		<- list of argument names
+		"start_index": int,		<- the index of the first token of the function code block
+		"end_index": int		<- the index of the IF U SAY SO of the function code block
+	}
+	*/
 	var function_table = [];		// list of all functions
 	var function_skip = false;		// skips a function definition
 	var function_identifier = null;	// the name of the function that is skipping
@@ -158,12 +167,12 @@ function semanticAnalyzer(tokens, function_name, args) {
 
 					// error if variable name is IT
 					if (operand1[1] === "IT") {
-						console.log(`Error: IT variable is reserved as an implicit variable.`);
+						terminal.error(`Error: IT variable is reserved as an implicit variable.`);
 						return;
 					}
 					// error if variable is already declared
 					if (symbol_table[operand1[1]]) {
-						console.log(`Error: variable ${operand1[1]} is already defined.`);
+						terminal.error(`Error: variable ${operand1[1]} is already defined.`);
 						return;
 					}
 
@@ -188,13 +197,13 @@ function semanticAnalyzer(tokens, function_name, args) {
 					operand2 = buffer.pop();	// value to be assigned
 
 					if (!symbol_table[operand1[1]]) {
-						console.log(`Error: variable ${operand1[1]} is not defined.`);
+						terminal.error(`Error: variable ${operand1[1]} is not defined.`);
 						return;
 					}
 
 					if (operand2[0] === "VARIDENT") {
 						if (!symbol_table[operand2[1]]) {
-							console.log(`Error: variable ${operand2[1]} is not defined.`);
+							terminal.error(`Error: variable ${operand2[1]} is not defined.`);
 							return;
 						}
 						operand2 = [
@@ -215,7 +224,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 					for (var i = 0; i < operands.length; i++) {
 						if (operands[i][0] === "VARIDENT") {
 							if (!symbol_table[operands[i][1]]) {
-								console.log(`Error: variable ${operands[i][1]} is not defined.`);
+								terminal.error(`Error: variable ${operands[i][1]} is not defined.`);
 								return;
 							}
 							operands[i] = [
@@ -225,10 +234,10 @@ function semanticAnalyzer(tokens, function_name, args) {
 						}
 					}
 
-					var suppressNewline = false;
+					var suppress_newline = false;
 					for (var i = 0; i < operands.length; i++) {
 						if(i === operands.length - 1 && operands[i][0] === "!") {
-							suppressNewline = true;
+							suppress_newline = true;
 							break;
 						}
 
@@ -239,19 +248,20 @@ function semanticAnalyzer(tokens, function_name, args) {
 							operands[i][1] = numbarToYarn(operands[i][1]);
 						}
 						else if (operands[i][0] === "NOOB") {
-							operands[i][1] = "NOOB";
+							terminal.error("Error: cannot implicitly cast NOOB to YARN.");
+							return;
 						}
 						terminal.write(operands[i][1]);
 					}
 
-					if (!suppressNewline) {
+					if (!suppress_newline) {
 						terminal.write("\n");
 					}
 					break;
 
-				case "GIMMEH": //inb4 di mapalitan pag presentation HAHAHAHAH weh ba?
+				case "GIMMEH": 
 					operand1 = buffer.pop();
-					var input = prompt(`GIMMEH ${operand1[1]}: `);
+					var input = prompt(`GIMMEH ${operand1[1]}:`);
 					
 					if (!symbol_table[operand1[1]]) {
 						terminal.error(`Error: variable ${operand1[1]} is not defined.`);
@@ -278,14 +288,14 @@ function semanticAnalyzer(tokens, function_name, args) {
 					// fetch variable value from symbol table
 					if (operand1[0] === "VARIDENT") {
 						if (!symbol_table[operand1[1]]) {
-							console.log(`Error: variable ${operand1[1]} is not defined.`);
+							terminal.error(`Error: variable ${operand1[1]} is not defined.`);
 							return;
 						}
 						operand1 = [symbol_table[operand1[1]]["type"], symbol_table[operand1[1]]["value"]];
 					}
 					if (operand2[0] === "VARIDENT") {
 						if (!symbol_table[operand2[1]]) {
-							console.log(`Error: variable ${operand1[1]} is not defined.`);
+							terminal.error(`Error: variable ${operand1[1]} is not defined.`);
 							return;
 						}
 						operand2 = [symbol_table[operand2[1]]["type"], symbol_table[operand2[1]]["value"]];
@@ -294,14 +304,14 @@ function semanticAnalyzer(tokens, function_name, args) {
 					// typecast YARN to int or float
 					if (operand1[0] === "YARN") {
 						if (isNaN(operand1[1])) {
-							console.log(`Error: ${operand1[1]} cannot be typecasted to NUMBR or NUMBAR.`);
+							terminal.error(`Error: ${operand1[1]} cannot be typecasted to NUMBR or NUMBAR.`);
 							return;
 						}
 						operand1[1] = operand1[1].includes(".") ? parseFloat(operand1[1]) : parseInt(operand1[1]);
 					}
 					if (operand2[0] === "YARN") {
 						if (isNaN(operand2[1])) {
-							console.log(`Error: ${operand2[1]} cannot be typecasted to NUMBR or NUMBAR.`);
+							terminal.error(`Error: ${operand2[1]} cannot be typecasted to NUMBR or NUMBAR.`);
 							return;
 						}
 						operand2[1] = operand2[1].includes(".") ? parseFloat(operand2[1]) : parseInt(operand2[1]);
@@ -349,14 +359,14 @@ function semanticAnalyzer(tokens, function_name, args) {
 					// fetch variable value from symbol table
 					if (operand1[0] === "VARIDENT") {
 						if (!symbol_table[operand1[1]]) {
-							console.log(`Error: variable ${operand1[1]} is not defined.`);
+							terminal.error(`Error: variable ${operand1[1]} is not defined.`);
 							return;
 						}
 						operand1 = [symbol_table[operand1[1]]["type"], symbol_table[operand1[1]]["value"]];
 					}
 					if (operand2 && operand2[0] === "VARIDENT") {
 						if (!symbol_table[operand2[1]]) {
-							console.log(`Error: variable ${operand2[1]} is not defined.`);
+							terminal.error(`Error: variable ${operand2[1]} is not defined.`);
 							return;
 						}
 						operand2 = [symbol_table[operand2[1]]["type"], symbol_table[operand2[1]]["value"]];
@@ -402,7 +412,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 					for (var i = 0; i < operands.length; i++) {
 						if (operands[i][0] === "VARIDENT") {
 							if (!symbol_table[operands[i][1]]) {
-								console.log(`Error: variable ${operands[i][1]} is not defined.`);
+								terminal.error(`Error: variable ${operands[i][1]} is not defined.`);
 								return;
 							}
 							operands[i] = [
@@ -420,7 +430,8 @@ function semanticAnalyzer(tokens, function_name, args) {
 							operands[i][1] = numbarToYarn(operands[i][1]);
 						}
 						else if (operands[i][0] === "NOOB") {
-							operands[i][1] = "NOOB";
+							terminal.error("Error: cannot implicitly cast NOOB to YARN.");
+							return;
 						}
 						answer += operands[i][1];
 					}
@@ -470,7 +481,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 					// fetch variable value from symbol table
 					if (operand1[0] === "VARIDENT") {
 						if (!symbol_table[operand1[1]]) {
-							console.log(`Error: variable ${operand1[1]} is not defined.`);
+							terminal.error(`Error: variable ${operand1[1]} is not defined.`);
 							return;
 						}
 						operand1 = [symbol_table[operand1[1]]["type"], symbol_table[operand1[1]]["value"]];
@@ -484,7 +495,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 								answer = Math.floor(answer);
 							}
 							if (isNaN(answer)) {
-								console.log(`Error: Cannot cast ${operand1[1]} to ${operand2[1]}.`);
+								terminal.error(`Error: Cannot cast ${operand1[1]} to ${operand2[1]}.`);
 								return;
 							}
 							break
@@ -516,7 +527,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 
 					// fetch variable value from symbol table
 					if (!symbol_table[var_name]) {
-						console.log(`Error: variable ${var_name} is not defined.`);
+						terminal.error(`Error: variable ${var_name} is not defined.`);
 						return;
 					}
 					operand1 = [symbol_table[var_name]["type"], symbol_table[var_name]["value"]];
@@ -529,7 +540,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 								answer = Math.floor(answer);
 							}
 							if (isNaN(answer)) {
-								console.log(`Error: Cannot cast ${operand1[1]} to ${operand2[1]}.`);
+								terminal.error(`Error: Cannot cast ${operand1[1]} to ${operand2[1]}.`);
 								return;
 							}
 							break;
@@ -599,7 +610,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 
 					// console.log(cases_stack)
 					if (condition_stack[csd]["cases"].includes(operand1[1])) {
-						console.log(`Error: OMG literal must be unique at ${operand1[1]}`);
+						terminal.error(`Error: OMG literal must be unique at ${operand1[1]}`);
 						return;
 					}
 					condition_stack[csd]["cases"].push(operand1[1]);
@@ -678,13 +689,13 @@ function semanticAnalyzer(tokens, function_name, args) {
 
 					// test if variable[1] exists on the symbol table
 					if (!symbol_table[variable[1]]) {
-						console.log(`Error: variable ${variable[1]} is not defined.`);
+						terminal.error(`Error: variable ${variable[1]} is not defined.`);
 						return;
 					}
 
 					// test if variable[1] can be converted to number
 					if (isNaN(symbol_table[variable[1]]["value"])) {
-						console.log(`Error: Cannot increment or decrement non-integer types.`);
+						terminal.error(`Error: Cannot increment or decrement non-integer types.`);
 						return;
 					}
 
@@ -736,40 +747,59 @@ function semanticAnalyzer(tokens, function_name, args) {
 					break;
 				
 				case "HOW_IZ_I":
-					/*
 					function_identifier = buffer.pop();
-					get all varidents in buffer
 
-					create an args_list [var1, var2, var3]
+					while (buffer.length) {
+						operands.push(buffer.pop());
+					}
+
+					var args_list = [];
+					for (var i = 0; i < operands.length; i++) {
+						args_list.push(operands[1]);
+					}
 
 					function_table[function_identifier] = {
-						args_list,
-						start_index,
-						end_index = null
+						"args_list": args_list,
+						"start_index": index,
+						"end_index": null
 					};
 
 					function_skip = true;
-					*/
-
 					break;
 
 				case "IF_U_SAY_SO":
-					/*
 					function_skip = false;
-					function_table[function_identifier]["end_index"] = index; // or index - 1 cuz of slice
+					function_table[function_identifier]["end_index"] = index - 1;
 					
 					function_identifier = null;
-					*/
 					break;
 				
 				case "I IZ":
-					/*
+					var function_to_be_called = buffer.pop();
 
-					var function_to_be_called = buffer.pop()
+					while (buffer.length) {
+						operands.push(buffer.pop());
+					}
 
-					get all the values from the buffer
-					store to var args_values
+					var args_values = [];
+					for (var i = 0; i < operands.length; i++) {
+						if (operands[i][0] === "VARIDENT") {
+							if (!symbol_table[operands[i][1]]) {
+								terminal.error(`Error: variable ${operands[i][1]} is not defined.`);
+								return;
+							}
+							operands[i] = [
+								symbol_table[operands[i][1]]["type"],
+								symbol_table[operands[i][1]]["value"]
+							];
+						}
+						args_values.push(operands[i][1]);
+					}
 
+					if (args_values.length !== function_table[function_to_be_called][args_list].length) {
+						terminal.error(`Error: function ${function_to_be_called} expects ${function_table[function_to_be_called][args_list].length} arguments, instead saw ${args_values.length}`);
+						return;
+					}
 
 					var args_to_be_passed = {}
 
@@ -777,6 +807,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 						args_to_be_passed[key] = args_values[i]
 					);
 
+					// run the function by calling semantiAnalyzer on the function code block
 					var return_value = semanticAnalyzer(
 						tokens.slice(
 							function_table[function_to_be_called]["start_index"],
@@ -786,19 +817,14 @@ function semanticAnalyzer(tokens, function_name, args) {
 						args_to_be_passed
 					);
 
-					if(return_value) {
-						buffer.push(return_value);
-					}
-					*/
+					buffer.push(return_value);
 					break;
 
 				case "FOUND_YR":
-					/*
 					// variable name to be returned
 					operand1 = buffer.pop()
 
-					return [symbol_table[operand1]["type"], symbol_table[operand1]["value"]]
-					*/
+					return [symbol_table[operand1[1]]["type"], symbol_table[operand1[1]]["value"]];
 					break;
 			}
 			// console.log(csd);
@@ -814,7 +840,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 			// if last token is a VARIDENT, store its value to IT
 			if (current_token[0] === "VARIDENT") {
 				if (!symbol_table[current_token[1]]) {
-					console.log(`Error: variable ${current_token[1]} is not defined.`);
+					terminal.error(`Error: variable ${current_token[1]} is not defined.`);
 					return;
 				}
 				current_token = [
@@ -825,9 +851,15 @@ function semanticAnalyzer(tokens, function_name, args) {
 			symbol_table["IT"]["type"] = current_token[0];
 			symbol_table["IT"]["value"] = current_token[1];
 		}
-		if(symbol_table["remark"] && symbol_table["remark"]["value"] === "hu r u?2") console.log("AAAAAAAAAAAAAAaa")
+		// TODO remove this after testing is complete
+		// if(symbol_table["remark"] && symbol_table["remark"]["value"] === "hu r u?2") console.log("AAAAAAAAAAAAAAaa")
 	}
-	console.log("SYMBOL TABLE:");
+	console.log("SYMBOL TABLE of ", function_name ? function_name : "main");
 	console.table(symbol_table);
 	//console.table(symbol_table['IT'].value);
+
+	// in the absence of any explicit break, when the end of the code block is reached, the value in IT is returned.
+	if(function_name) {
+		return symbol_table["IT"];
+	}
 }

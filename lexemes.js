@@ -70,6 +70,7 @@ var all_pl_elements = [
 
 
 var token_to_classification = {
+    "A": "Type Keyword",
 	"AN": "Operand Delimitier Keyword",
 	"ANY_OF": "OR Delimiter Operation Keyword",
 	"ALL_OF": "AND Delimiter Operation Keyword",
@@ -92,6 +93,7 @@ var token_to_classification = {
 	"I_HAS_A": "Variable Declaration Keyword",
 	"KTHXBYE": "Code Delimiter Keyword",
 	"LOOPIDENT": "Loop Identifier",
+    "MAEK": "Type Casting Declaration Keyword",
 	"MKAY": "Infinite Delimiter Keyword",
 	"NUMBR": "NUMBR Literal",
 	"NUMBAR": "NUMBAR Literal",
@@ -112,12 +114,16 @@ var token_to_classification = {
 	"SMALLR OF": "Min Operation Keyword",
 	"SUM_OF": "Addition Operation Keyword",
 	"TLDR": "Comment Delimiter Keyword",
+    "TYPE": "TYPE Literal",
+    "TROOF": "TROOF Literal",
 	"VARIDENT": "Variable Identifier",
+    "VISIBLE" : "Output Keyword",
 	"YARN": "YARN Literal",
-	"WIN": "TROOF Literal",
+	"WIN": "WIN Literal",
 	"WON OF": "XOR Operation Keyword",
 	"VISIBL": "Output Keyword",
 	"YA_RLY": "If Keyword",
+    "!": "No Newline Output",
 };
 
 class MultiWord {

@@ -2,75 +2,87 @@
 <html lang="en">
 <style>
 		#lexemeDiv{
-			padding: 10px 10px 10px 10px;
+			padding: 10px;
 			overflow-y: scroll;
 			overflow-x: fixed;
 			height: 50vh;
 		}
 		#symbolTableDiv{
-			padding: 10px 10px 10px 10px;
+			padding: 10px;
 			overflow-y: scroll;
 			overflow-x: fixed;
 			height: 50vh;
 		}
-
+		#terminalDiv{
+			width: 99%;
+			height: 95%;
+			align:left;
+			resize:none;
+			overflow-y: scroll;
+			overflow-x: scroll;
+		}
 </style>		
-<head>
-	<link href="style.css" rel="stylesheet"/>
-	<link href="codemirror-5.64.0/lib/codemirror.css" rel="stylesheet"/>
-	<link href="codemirror-5.64.0/theme/eclipse.css" rel="stylesheet"/>
-	<script src="codemirror-5.64.0/lib/codemirror.js"></script>
-	<script src="codemirror-5.64.0/mode/lolcode/lolcode.js"></script>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Nyanterpreter</title>
-</head>
-<body style="background-color:powderblue;">
-	<div class="row" style="padding: 10px 10px 10px 10px;">
-		<div class = "container col s4 white">
-			<h5 align="center">Your LOLCODE</h5>
-			<input type="file" id="file-input" />
-			<textarea id="file-content" name="file-content" style="display: none;"></textarea>
-		</div>
-		<div id = "lexemeDiv" class = "container col s4 center white">
-			<table style="background-color: black;">
-				<h5>LEXEMES</h5>
-			</table>
-			<table>
-				<thead>
-					<tr>
-						<th style="width:50%;">Lexemes</th>
-						<th style="width:50%;">Classification</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-		<div id = "symbolTableDiv" class = "container col s4 center white">
-			<h5>SYMBOL TABLE</h5>
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Value</th>
-						<th>Type</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
+	<head>
+		<link href="style.css" rel="stylesheet"/>
+		<link href="codemirror-5.64.0/lib/codemirror.css" rel="stylesheet"/>
+		<link href="codemirror-5.64.0/theme/eclipse.css" rel="stylesheet"/>
+		<script src="codemirror-5.64.0/lib/codemirror.js"></script>
+		<script src="codemirror-5.64.0/mode/lolcode/lolcode.js"></script>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Nyanterpreter</title>
+	</head>
+	<body style="background-color:powderblue;">
+		<div class="grid">
+			<div class="item1 container white">
+				<!-- <div class=""> -->
+					<h5 align="center">Your LOLCODE</h5>
+					<input type="file" id="file-input"/>
+					<textarea id="file-content" name="file-content" style="display: none;"></textarea>
+				<!-- </div> -->
+			</div>
+			<div class="item2">
+				<div id="lexemeDiv" class="container center white">
+					<table style="background-color: black;">
+						<h5>LEXEMES</h5>
+					</table>
+					<table>
+						<thead>
+							<tr>
+								<th style="width:50%;">Lexemes</th>
+								<th style="width:50%;">Classification</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="item3">
+				<div id="symbolTableDiv" class="container center white">
+					<h5>SYMBOL TABLE</h5>
+					<table>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Value</th>
+								<th>Type</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="item4">
+				<button class="black btn" onclick="execute()">EXECUTE</button>
+				<h5>TERMINAL</h5>
+			</div>
+			<div class="item5">
+				<textarea id="terminalDiv" readonly></textarea>
+			</div>
 	</div>
-	<div class="row" style="padding: 10px 10px 10px 10px;">
-		<center><button  class = "col s12 black btn" onclick="execute()">EXECUTE</button></center>
-	</div>
-	<h5>TERMINAL</h5>
-	<pre>
-		<div id="terminal" class="row s12 white" style="padding: 10px 10px 10px 10px">
-		</div>
-	</pre>
 </body>
 <script src="lexemes.js"></script>
 <script src="grammar.js"></script>

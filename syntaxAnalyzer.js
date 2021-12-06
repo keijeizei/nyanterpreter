@@ -17,14 +17,14 @@ function syntaxAnalyzer(tokens) {
 		if (expected === "") {
 			// expected = "HAI"
 			// instead_saw = tokens[0][0]
-			console.log(`Unexepected token ${tokens[last_index][0]}`);
+			terminal.error(`Unexepected token ${tokens[last_index][0]}`);
 			return false;
 		}
-		console.log(`Syntax error: Expected ${expected}, instead saw ${instead_saw}`);
+		terminal.error(`Syntax error: Expected ${expected}, instead saw ${instead_saw}`);
 		return false;
 	}
 	else if (index < tokens.length) {
-		console.log(`Unexepected token ${tokens[tokens.length - 1]} after KTHXBYE.`);
+		terminal.error(`Unexepected token ${tokens[tokens.length - 1]} after KTHXBYE.`);
 		return false;
 	}
 	else {

@@ -1,7 +1,7 @@
 class Terminal {
 	constructor() {
 		this.content = "";
-		this.terminal = document.getElementById("terminal");
+		this.terminal = document.getElementById("terminalDiv");
 	}
 
 	updateGUI() {

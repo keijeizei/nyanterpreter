@@ -171,7 +171,7 @@ class LexicalAnalyzer {
 							this.tokens.push(["TLDR", null]);
 						}
 						else {
-							console.log("Error: Matching OBTW for TLDR not found.");
+							terminal.error("Error: Matching OBTW for TLDR not found.");
 							return;
 						}
 					}
@@ -198,7 +198,7 @@ class LexicalAnalyzer {
 							this.tokens.push(["OBTW", null]);
 						}
 						else {
-							console.log("Error: No statement before OBTW allowed");
+							terminal.error("Error: No statement before OBTW allowed");
 							return;
 						}
 					}
@@ -258,7 +258,7 @@ class LexicalAnalyzer {
 			// ============== current character is a space or tab ==============
 
 			else if (this.tokens[this.tokens.length - 1] && this.tokens[this.tokens.length - 1][0] === "TLDR") {
-				console.log("Error: TLDR must not be followed by a statement.");
+				terminal.error("Error: TLDR must not be followed by a statement.");
 				return;
 			}
 			// don't detect BTW and OBTW inside comments
@@ -283,7 +283,7 @@ class LexicalAnalyzer {
 					this.clearBuffer();
 				}
 				else {
-					console.log("Error: No statement before OBTW allowed");
+					terminal.error("Error: No statement before OBTW allowed");
 					return;
 				}
 			}
@@ -293,7 +293,7 @@ class LexicalAnalyzer {
 					this.tokens.push(["TLDR", null]);
 				}
 				else {
-					console.log("Error: Matching OBTW for TLDR not found.");
+					terminal.error("Error: Matching OBTW for TLDR not found.");
 					return;
 				}
 			}
@@ -337,11 +337,11 @@ class LexicalAnalyzer {
 
 		// ERROR CHECKING
 		if (is_string) {
-			console.log("Error: Matching closing quotes for YARN not found.");
+			terminal.error("Error: Matching closing quotes for YARN not found.");
 			return;
 		}
 		if (is_multiline_comment) {
-			console.log("Error: Matching TLDR for OBTW not found.");
+			terminal.error("Error: Matching TLDR for OBTW not found.");
 			return;
 		}
 
