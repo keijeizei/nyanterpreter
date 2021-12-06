@@ -23,6 +23,19 @@ function isInteger(n) {
 }
 
 /**
+ * Converts a NUMBAR to YARN by truncating the float to 2 decimal places.
+ */
+function numbarToYarn(numbar) {
+    var num_s = numbar.toString(),
+        dec_pos = num_s.indexOf("."),
+        substr_len = dec_pos == -1 ? num_s.length : 1 + dec_pos + 2,
+        trimmed_result = num_s.substr(0, substr_len),
+        final_result = isNaN(trimmed_result) ? 0 : trimmed_result;
+
+    return parseFloat(final_result).toFixed(2);
+}
+
+/**
  * Main semantic analyzer which runs the commands.
  * Function calls are done by calling semanticAnalyzer again.
  * @param tokens - The tokens to be executed
@@ -96,6 +109,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 		index = line[1];
 
 		operands = [];
+		buffer = [];
 
 		// skip all commands except conditional commands when skip is enabled
 		if (csd > -1 && !conditional_tokens.includes(stack[0][0])) {
@@ -167,7 +181,8 @@ function semanticAnalyzer(tokens, function_name, args) {
 							"value": operand2[1]
 						};
 					}
-					break
+					break;
+
 				case "R":
 					operand1 = stack.pop();	// variable to be assigned to
 					operand2 = buffer.pop();	// value to be assigned
@@ -212,7 +227,6 @@ function semanticAnalyzer(tokens, function_name, args) {
 
 					var suppressNewline = false;
 					for (var i = 0; i < operands.length; i++) {
-						console.log(operands)
 						if(i === operands.length - 1 && operands[i][0] === "!") {
 							suppressNewline = true;
 							break;
@@ -221,12 +235,33 @@ function semanticAnalyzer(tokens, function_name, args) {
 						if (operands[i][0] === "TROOF") {
 							operands[i][1] = operands[i][1] ? "WIN" : "FAIL";
 						}
-						terminal.append(operands[i][1]);
+						else if (operands[i][0] === "NUMBAR") {
+							operands[i][1] = numbarToYarn(operands[i][1]);
+						}
+						else if (operands[i][0] === "NOOB") {
+							operands[i][1] = "NOOB";
+						}
+						terminal.write(operands[i][1]);
 					}
 
 					if (!suppressNewline) {
-						terminal.append("\n");
+						terminal.write("\n");
 					}
+					break;
+
+				case "GIMMEH": //inb4 di mapalitan pag presentation HAHAHAHAH weh ba?
+					operand1 = buffer.pop();
+					var input = prompt(`GIMMEH ${operand1[1]}: `);
+					
+					if (!symbol_table[operand1[1]]) {
+						terminal.error(`Error: variable ${operand1[1]} is not defined.`);
+					}
+					else {
+						symbol_table[operand1[1]]["type"] = "YARN";
+						symbol_table[operand1[1]]["value"] = input;
+					}
+
+
 					break;
 
 				// arithmetic operations
@@ -380,6 +415,12 @@ function semanticAnalyzer(tokens, function_name, args) {
 					for (var i = 0; i < operands.length; i++) {
 						if (operands[i][0] === "TROOF") {
 							operands[i][1] = operands[i][1] ? "WIN" : "FAIL";
+						}
+						else if (operands[i][0] === "NUMBAR") {
+							operands[i][1] = numbarToYarn(operands[i][1]);
+						}
+						else if (operands[i][0] === "NOOB") {
+							operands[i][1] = "NOOB";
 						}
 						answer += operands[i][1];
 					}
@@ -788,4 +829,5 @@ function semanticAnalyzer(tokens, function_name, args) {
 	}
 	console.log("SYMBOL TABLE:");
 	console.table(symbol_table);
+	//console.table(symbol_table['IT'].value);
 }

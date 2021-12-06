@@ -16,11 +16,11 @@ function execute() {
 	var lexer = new LexicalAnalyzer(code_text);
 	lexer.start();
 	removeTable();
-    addTable();
 	if (interpreter_tokens) {
 		var valid_syntax = syntaxAnalyzer(interpreter_tokens, null, null);
 		if (valid_syntax) {
 			semanticAnalyzer(interpreter_tokens);
+    		addTable();
 		}
 	}
 

@@ -14,11 +14,6 @@ class Terminal {
 	}
 
 	write(output) {
-		this.content = output;
-		this.updateGUI();
-	}
-
-	append(output) {
 		this.content += output;
 		this.updateGUI();
 	}

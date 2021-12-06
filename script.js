@@ -61,16 +61,58 @@ function addTable() {
 		tr.appendChild(td2);
 		td2.appendChild(document.createTextNode(token_to_classification[gui_tokens[i][0]]));
         tr.appendChild(td2);
+
+		
 		
 	}
 	
 	myTableDiv.appendChild(table);
+	//---------------------------------------SYMBOL TABLE----------------------------------
+	var mysymbolTableDiv = document.getElementById("symbolTableDiv");
+
+	var symbolTable = document.createElement('TABLE');
+	symbolTable.id="symbolTableID"
+	symbolTable.border = '1';
+
+	var symbolTableBody = document.createElement('TBODY');
+	symbolTableBody.id = 'symbolTableBodyID'
+	symbolTable.appendChild(symbolTableBody);
+
+	console.log(symbol_table)
+	for (var key in symbol_table) {
+		console.log(key)
+		var symbolTabletr = document.createElement('TR');
+		symbolTabletr.id="symbolTabletrID"
+		symbolTableBody.appendChild(symbolTabletr);
+		var symbolTabletd = document.createElement('TD');
+		symbolTabletd.width= '50%'
+		symbolTabletd.appendChild(document.createTextNode(key));
+		symbolTabletr.appendChild(symbolTabletd);
+
+
+		var symbolTabletd2 = document.createElement('TD');
+		symbolTabletd2.width= '50%'
+		symbolTabletr.appendChild(symbolTabletd2)
+		symbolTabletd2.appendChild(document.createTextNode(symbol_table[key].type));
+		symbolTabletr.appendChild(symbolTabletd2);
+
+		var symbolTabletd3 = document.createElement('TD');
+		symbolTabletd3.width= '50%'
+		symbolTabletr.appendChild(symbolTabletd3)
+		symbolTabletd3.appendChild(document.createTextNode(symbol_table[key].value));
+		symbolTabletr.appendChild(symbolTabletd3);
+				
+	}
+	mysymbolTableDiv.appendChild(symbolTable);
 }
 function removeTable(){
 	var table = document.getElementById("tableID")
 	var tableBody = document.getElementById("tbodyID")
+    var symbolTable = document.getElementById("symbolTableID")
+    var symbolTableBody = document.getElementById("symbolTableBodyID")
 	if(table !== null){
 		table.remove(tableBody);
+        symbolTable.remove(symbolTableBody);
 	}else{
 		return
 	}
