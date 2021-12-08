@@ -140,14 +140,22 @@ class LexicalAnalyzer {
 	}
 
 	/**
-	 * Get a version of the tokens without the comments
+	 * Get a version of the tokens without the comments and ,  and ...
 	 * This is still stored in this.tokens because it still needs to be cleaned by cleanExcessLinebreaks()
 	 * It will be stored later in the gloabl interpreter_tokens
 	 */
 	getInterpreterTokens() {
-		this.tokens = this.tokens.filter(token =>
-			comment_tokens.includes(token[0]) ? false : true
+		// remove comments and commas
+		this.tokens = this.tokens.filter(token => 
+			!(comment_tokens.includes(token[0]) || token[0] === ",")
 		);
+
+		// remove ... together with the LINEBREAK after
+		for (var i = 0; i < this.tokens.length; i++) {
+			if(this.tokens[i][0] === "..." && this.tokens[i + 1][0] === "LINEBREAK") {
+				this.tokens.splice(i, 2);
+			}
+		}
 	}
 
 	start() {
@@ -191,7 +199,7 @@ class LexicalAnalyzer {
 					}
 					// OBTW immediately followed by a LINEBREAK
 					else if (this.buffer === "OBTW") {
-						if (this.tokens[this.tokens.length - 1][0] === "LINEBREAK") {
+						if (!this.tokens.length || this.tokens[this.tokens.length - 1][0] === "LINEBREAK") {
 							is_multiline_comment = true;
 
 							// push the OBTW token
@@ -202,10 +210,18 @@ class LexicalAnalyzer {
 							return;
 						}
 					}
+					// buffer contains a ... , push ... token
+					else if (this.buffer.slice(-4, -1) === "...") {
+						valid_lexeme = this.tokenize(this.buffer.slice(4, -1));	// remove the ...
+
+						this.tokens.push(["...", null]);						// push ... lexeme
+						this.tokens.push(["LINEBREAK", null]);
+					}
 					// buffer contains a comma, push a soft LINEBREAK
 					else if (this.buffer[this.buffer.length - 1] === ",") {
 						valid_lexeme = this.tokenize(this.buffer.slice(0, -1));	// remove the comma
 
+						this.tokens.push([",", null]);							// push comma lexeme
 						this.tokens.push(["LINEBREAK", null]);
 					}
 					// buffer contains an exclamation, push a !

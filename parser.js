@@ -387,7 +387,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 							answer = operand1[1] || operand2[1];
 							break;
 						case "WON_OF":
-							answer = (operand1[1] && operand2[1]) || (operand1[1] && operand2[1]);
+							answer = (operand1[1] && !operand2[1]) || (!operand1[1] && operand2[1]);
 							break;
 						case "NOT":
 							answer = !operand1[1];
@@ -447,12 +447,12 @@ function semanticAnalyzer(tokens, function_name, args) {
 						operands.push(buffer.pop());
 					}
 
-					for (var operand of operands) {
-						if (operand[0] === "VARIDENT") {
-							operand = [symbol_table[operand[1]]["type"], symbol_table[operand[1]]["value"]];
+					for (var i = 0; i < operands.length; i++) {
+						if (operands[i][0] === "VARIDENT") {
+							operands[i] = [symbol_table[operands[i][1]]["type"], symbol_table[operands[i][1]]["value"]];
 						}
 					}
-
+					console.log(operands)
 					// perform the specific operation
 					switch (current_token[0]) {
 						case "ANY_OF":
@@ -468,7 +468,8 @@ function semanticAnalyzer(tokens, function_name, args) {
 							}
 							break;
 					}
-					stack.push(["TROOF", answer ? "WIN" : "FAIL"]);
+
+					stack.push(["TROOF", answer]);
 					return_to_IT = true;
 					break;
 

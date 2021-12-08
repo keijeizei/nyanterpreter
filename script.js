@@ -88,18 +88,19 @@ for (var i = 0; i < gui_tokens.length; i++) {
 		symbolTabletr.id="symbolTabletrID"
 		symbolTableBody.appendChild(symbolTabletr);
 		var symbolTabletd = document.createElement('TD');
-		symbolTabletd.width= '50%'
+		symbolTabletd.width= '33%'
+		symbolTabletd.borderColor = 'red';
 		symbolTabletd.appendChild(document.createTextNode(key));
 		symbolTabletr.appendChild(symbolTabletd);
 
 
 		var symbolTabletd2 = document.createElement('TD');
-		symbolTabletd2.width= '50%'
+		symbolTabletd2.width= '33%'
 		symbolTabletr.appendChild(symbolTabletd2)
         if (symbol_table[key].value == true) {
             symbolTabletd2.appendChild(document.createTextNode("WIN"));
         } else if (symbol_table[key].value == false){
-            symbolTabletd2.appendChild(document.createTextNode("LOSE"));
+            symbolTabletd2.appendChild(document.createTextNode("FAIL"));
         } else if (symbol_table[key].value == null){
             symbolTabletd2.appendChild(document.createTextNode("NOOB"));
         } else {
@@ -108,7 +109,7 @@ for (var i = 0; i < gui_tokens.length; i++) {
 		symbolTabletr.appendChild(symbolTabletd2);
 
 		var symbolTabletd3 = document.createElement('TD');
-		symbolTabletd3.width= '50%'
+		symbolTabletd3.width= '33%'
 		symbolTabletr.appendChild(symbolTabletd3)
 		symbolTabletd3.appendChild(document.createTextNode(symbol_table[key].type));
 		symbolTabletr.appendChild(symbolTabletd3);

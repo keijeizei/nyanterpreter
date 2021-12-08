@@ -98,6 +98,7 @@ boolean_operation = new Abstraction("boolean operation", []);
 code_block = new Abstraction("code block", []);
 no_dec_code_block = new Abstraction("no declaration code block", []);
 no_infinite_expression = new Abstraction("no infinite expression", []);
+assignment_expression = new Abstraction("assignment expression", []);
 
 literal = new Abstraction("literal", [
 	["NUMBR"],
@@ -240,6 +241,21 @@ expression.rules = [
 	[smoosh],
 ];
 
+assignment_expression.rules = [
+	[add],
+	[sub],
+	[mul],
+	[div],
+	[mod],
+	[greater],
+	[cast],
+	[less],
+	[boolean_operation],
+	[equals],
+	[not_equals],
+	[smoosh],
+];
+
 loop_condition = new Abstraction("loop condition", [
 	["UPPIN_YR", "VARIDENT", "TIL", expression],
 	["NERFIN_YR", "VARIDENT", "TIL", expression],
@@ -278,7 +294,7 @@ if_statement = new Abstraction("if statement", [
 ]);
 
 assignment = new Abstraction("assignment", [
-	["VARIDENT", "R", expression],
+	["VARIDENT", "R", assignment_expression],
 	["VARIDENT", "R", "VARIDENT"]
 ]);
 

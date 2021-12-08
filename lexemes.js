@@ -86,6 +86,8 @@ var token_to_classification = {
 	"GIMMEH": "Input Keyword",
 	"GTFO": "Break Keyword",
 	"HAI": "Code Delimiter Keyword",
+	"HOW_IZ_I": "Function Delimiter Keyword",
+	"IF_YOU_SAY_SO":"Function Delimiter Keyword",
 	"IM_IN_YR": "Loop Delimiter Keyword",
 	"IM_OUTTA_YR": "Loop Delimiter Keyword",
 	"IT": "Identifier",
