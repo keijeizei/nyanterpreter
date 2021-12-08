@@ -108,7 +108,7 @@ literal = new Abstraction("literal", [
 	["NOOB"]
 ]);
 
-cast_assign = new Abstraction("cast_assignment", [
+cast_assign = new Abstraction("cast assignment", [
 	["VARIDENT", "IS_NOW_A", "TYPE"]
 ]);
 
@@ -117,7 +117,7 @@ cast = new Abstraction("cast", [
 	["MAEK", "VARIDENT", "A", "TYPE"]
 ]);
 
-smoosh_content = new Abstraction("smoosh_content", [
+smoosh_content = new Abstraction("smoosh content", [
 	[expression, "AN", "this"],
 	["VARIDENT", "AN", "this"],
 	[expression],
@@ -128,12 +128,12 @@ smoosh = new Abstraction("smoosh", [
 	["SMOOSH", smoosh_content]
 ]);
 
-operation_content = new Abstraction("operation_content", [
+operation_content = new Abstraction("operation content", [
 	[no_infinite_expression],
 	["VARIDENT"],
 ]);
 
-not_equals = new Abstraction("not_equals", [
+not_equals = new Abstraction("not equals", [
 	["DIFFRINT", operation_content, "AN", operation_content]
 ]);
 
@@ -141,7 +141,7 @@ equals = new Abstraction("equals", [
 	["BOTH_SAEM", operation_content, "AN", operation_content],
 ]);
 
-all_any_content = new Abstraction("all_any_content", [
+all_any_content = new Abstraction("all any content", [
 	[no_infinite_expression, "AN", "this"],
 	[no_infinite_expression]
 ]);
@@ -154,7 +154,7 @@ all = new Abstraction("all", [
 	["ALL_OF", all_any_content, "MKAY"]
 ]);
 
-infinite_operation = new Abstraction("infinite_operation", [
+infinite_operation = new Abstraction("infinite operation", [
 	[all],
 	[any]
 ]);
@@ -212,18 +212,18 @@ add = new Abstraction("add", [
 	["SUM_OF", operation_content, "AN", operation_content]
 ]);
 
-function_call_arity= new Abstraction("function_call_arity",[
+function_call_arity= new Abstraction("function call arity",[
 	[expression, "AN", "YR", "this"],
 	["VARIDENT", "AN", "YR","this"],
 	[expression],
 	["VARIDENT"],
 ]);
 
-function_call = new Abstraction("function_call",[
+function_call = new Abstraction("function call",[
     ["I_IZ","FUNIDENT","YR", function_call_arity, "MKAY"]
 ]);
 
-function_return = new Abstraction("function_return",[
+function_return = new Abstraction("function return",[
 	["FOUND_YR", expression],
 	["FOUND_YR", "VARIDENT"]
 ]);
@@ -320,7 +320,7 @@ input = new Abstraction("GIMMEH", [
 	["GIMMEH", "VARIDENT"]
 ]);
 
-print_content = new Abstraction("print_content", [
+print_content = new Abstraction("print content", [
 	[expression, "this"],
 	["VARIDENT", "this"],
 	[expression],
@@ -338,7 +338,7 @@ declaration = new Abstraction("declaration", [
 	["I_HAS_A", "VARIDENT"],
 ]);
 
-function_no_dec_statement = new Abstraction("function_no_dec_statement", [
+function_no_dec_statement = new Abstraction("function no dec statement", [
 	[assignment],
 	[cast],
 	[cast_assign],
@@ -352,31 +352,31 @@ function_no_dec_statement = new Abstraction("function_no_dec_statement", [
 	["LINEBREAK"]
 ]);
 
-function_no_dec_code_block = new Abstraction("function_no_dec_code_block", [
+function_no_dec_code_block = new Abstraction("function no dec code block", [
 	[function_no_dec_statement, "LINEBREAK", "this"],
 	[function_no_dec_statement, "LINEBREAK"]
 ]);
 
-function_else_statement = new Abstraction("function_else_statement", [
+function_else_statement = new Abstraction("function else statement", [
 	["NO_WAI", "LINEBREAK", function_no_dec_code_block, "OIC"],
 	["OIC"]
 ]);
 
-function_if_statement = new Abstraction("function_if_statement",[
+function_if_statement = new Abstraction("function if statement",[
 	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", function_no_dec_code_block, function_else_statement]
 ]);
 
-function_loop_statement = new Abstraction("function_loop_statement", [
+function_loop_statement = new Abstraction("function loop statement", [
 	["IM_IN_YR", "LOOPIDENT", loop_condition, "LINEBREAK", function_no_dec_code_block, "IM_OUTTA_YR", "LOOPIDENT"]
 
 ]);
 
-function_switch_OMGWTF = new Abstraction("function_switch_OMGWTF", [
+function_switch_OMGWTF = new Abstraction("function switch OMGWTF", [
 	["OMGWTF", "LINEBREAK", function_no_dec_code_block, "OIC"],
 	["OIC"]
 ]);
 
-function_switch_OMG = new Abstraction("function_switch_OMG",[
+function_switch_OMG = new Abstraction("function switch OMG",[
 	["OMG", literal, "LINEBREAK", function_no_dec_code_block, "GTFO", "LINEBREAK", switch_OMG],
 	["OMG", literal, "LINEBREAK", function_no_dec_code_block, "GTFO", "LINEBREAK"],
 	["OMG", literal, "LINEBREAK", function_no_dec_code_block, "this"],
@@ -384,11 +384,11 @@ function_switch_OMG = new Abstraction("function_switch_OMG",[
 	["OMG", literal, "LINEBREAK", "this"]
 ]);
 
-function_switch_case = new Abstraction("function_switch_case", [
+function_switch_case = new Abstraction("function switch case", [
 	["WTF?", "LINEBREAK", switch_OMG, switch_OMGWTF]
 ]);
 
-function_inside_statement = new Abstraction("function_inside_statement",[
+function_inside_statement = new Abstraction("function inside statement",[
 	[assignment],
 	[cast],
 	[cast_assign],
@@ -405,17 +405,17 @@ function_inside_statement = new Abstraction("function_inside_statement",[
 	["LINEBREAK"],
 ]);
 
-function_code_block = new Abstraction("function_code_block",[
+function_code_block = new Abstraction("function code block",[
 	[function_inside_statement, "LINEBREAK", "this"],
 	[function_inside_statement]
 ]);
 
-function_arguments = new Abstraction("function_arguments",[
+function_arguments = new Abstraction("function arguments",[
 	["VARIDENT", "AN", "YR", "this"],
 	["VARIDENT"]
 ]);
 
-function_statement= new Abstraction("function_statement",[
+function_statement= new Abstraction("function statement",[
 	["HOW_IZ_I", "FUNIDENT", "YR", function_arguments, "LINEBREAK", function_code_block, "LINEBREAK", "IF_U_SAY_SO"],
 ]);
 
@@ -435,7 +435,7 @@ statement = new Abstraction("statement", [
 	["LINEBREAK"]
 ]);
 
-no_dec_statement = new Abstraction ("no_dec_statement", [
+no_dec_statement = new Abstraction ("no dec statement", [
 	[assignment],
 	[cast],
 	[cast_assign],
