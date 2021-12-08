@@ -22,7 +22,7 @@ class Abstraction {
 				}
 
 				// process.stdout.write("\t".repeat(tab_count))
-				// console.log(symbol.name ? `${symbol.name}` : `${symbol} vs ${tokens[index][0]}`)
+				console.log("\t".repeat(tab_count), symbol.name ? `${symbol.name}` : `${symbol} vs ${tokens[index][0]}`)
 
 				if (typeof (symbol) === "object") {
 					tab_count++;
@@ -108,7 +108,7 @@ literal = new Abstraction("literal", [
 	["NOOB"]
 ]);
 
-cast_assign = new Abstraction("cast assignment", [
+cast_assign = new Abstraction("cast_assignment", [
 	["VARIDENT", "IS_NOW_A", "TYPE"]
 ]);
 
@@ -117,7 +117,7 @@ cast = new Abstraction("cast", [
 	["MAEK", "VARIDENT", "A", "TYPE"]
 ]);
 
-smoosh_content = new Abstraction("smoosh content", [
+smoosh_content = new Abstraction("smoosh_content", [
 	[expression, "AN", "this"],
 	["VARIDENT", "AN", "this"],
 	[expression],
@@ -128,12 +128,12 @@ smoosh = new Abstraction("smoosh", [
 	["SMOOSH", smoosh_content]
 ]);
 
-operation_content = new Abstraction("operation content", [
+operation_content = new Abstraction("operation_content", [
 	[no_infinite_expression],
 	["VARIDENT"],
 ]);
 
-not_equals = new Abstraction("not equals", [
+not_equals = new Abstraction("not_equals", [
 	["DIFFRINT", operation_content, "AN", operation_content]
 ]);
 
@@ -141,7 +141,7 @@ equals = new Abstraction("equals", [
 	["BOTH_SAEM", operation_content, "AN", operation_content],
 ]);
 
-all_any_content = new Abstraction("all any content", [
+all_any_content = new Abstraction("all_any_content", [
 	[no_infinite_expression, "AN", "this"],
 	[no_infinite_expression]
 ]);
@@ -154,7 +154,7 @@ all = new Abstraction("all", [
 	["ALL_OF", all_any_content, "MKAY"]
 ]);
 
-infinite_operation = new Abstraction("infinite operation", [
+infinite_operation = new Abstraction("infinite_operation", [
 	[all],
 	[any]
 ]);
@@ -212,6 +212,23 @@ add = new Abstraction("add", [
 	["SUM_OF", operation_content, "AN", operation_content]
 ]);
 
+function_call_arity= new Abstraction("function_call_arity",[
+	[expression, "AN", "YR", "this"],
+	["VARIDENT", "AN", "YR","this"],
+	[expression],
+	["VARIDENT"],
+]);
+
+function_call = new Abstraction("function_call",[
+    ["I_IZ","FUNIDENT","YR", function_call_arity, "MKAY"]
+]);
+
+function_return = new Abstraction("function_return",[
+	["FOUND_YR", expression],
+	["FOUND_YR", "VARIDENT"]
+]);
+
+
 no_infinite_expression.rules = [
 	[add],
 	[sub],
@@ -238,6 +255,7 @@ expression.rules = [
 	[infinite_operation],
 	[equals],
 	[not_equals],
+	[function_call],
 	[smoosh],
 ];
 
@@ -320,6 +338,88 @@ declaration = new Abstraction("declaration", [
 	["I_HAS_A", "VARIDENT"],
 ]);
 
+function_no_dec_statement = new Abstraction("function_no_dec_statement", [
+	[assignment],
+	[cast],
+	[cast_assign],
+	[expression],
+	[if_statement],
+	[input],
+	[loop_statement],
+	[print],
+	[function_return],
+	[switch_case],
+	["LINEBREAK"]
+]);
+
+function_no_dec_code_block = new Abstraction("function_no_dec_code_block", [
+	[function_no_dec_statement, "LINEBREAK", "this"],
+	[function_no_dec_statement, "LINEBREAK"]
+]);
+
+function_else_statement = new Abstraction("function_else_statement", [
+	["NO_WAI", "LINEBREAK", function_no_dec_code_block, "OIC"],
+	["OIC"]
+]);
+
+function_if_statement = new Abstraction("function_if_statement",[
+	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", function_no_dec_code_block, function_else_statement]
+]);
+
+function_loop_statement = new Abstraction("function_loop_statement", [
+	["IM_IN_YR", "LOOPIDENT", loop_condition, "LINEBREAK", function_no_dec_code_block, "IM_OUTTA_YR", "LOOPIDENT"]
+
+]);
+
+function_switch_OMGWTF = new Abstraction("function_switch_OMGWTF", [
+	["OMGWTF", "LINEBREAK", function_no_dec_code_block, "OIC"],
+	["OIC"]
+]);
+
+function_switch_OMG = new Abstraction("function_switch_OMG",[
+	["OMG", literal, "LINEBREAK", function_no_dec_code_block, "GTFO", "LINEBREAK", switch_OMG],
+	["OMG", literal, "LINEBREAK", function_no_dec_code_block, "GTFO", "LINEBREAK"],
+	["OMG", literal, "LINEBREAK", function_no_dec_code_block, "this"],
+	["OMG", literal, "LINEBREAK", function_no_dec_code_block],
+	["OMG", literal, "LINEBREAK", "this"]
+]);
+
+function_switch_case = new Abstraction("function_switch_case", [
+	["WTF?", "LINEBREAK", switch_OMG, switch_OMGWTF]
+]);
+
+function_inside_statement = new Abstraction("function_inside_statement",[
+	[assignment],
+	[cast],
+	[cast_assign],
+	[declaration],
+	[expression],
+	[function_if_statement],
+	[input],
+	[function_loop_statement],
+	[print],
+	[function_switch_case],
+	// [function_call], TODO: add recursion feature later
+	[function_return],
+	["GTFO"],
+	["LINEBREAK"],
+]);
+
+function_code_block = new Abstraction("function_code_block",[
+	[function_inside_statement, "LINEBREAK", "this"],
+	[function_inside_statement]
+]);
+
+function_arguments = new Abstraction("function_arguments",[
+	["VARIDENT", "AN", "YR", "this"],
+	["VARIDENT"]
+]);
+
+function_statement= new Abstraction("function_statement",[
+	["HOW_IZ_I", "FUNIDENT", "YR", function_arguments, "LINEBREAK", function_code_block, "LINEBREAK", "IF_U_SAY_SO"],
+]);
+
+
 statement = new Abstraction("statement", [
 	[assignment],
 	[cast],
@@ -331,6 +431,7 @@ statement = new Abstraction("statement", [
 	[loop_statement],
 	[print],
 	[switch_case],
+	[function_statement],
 	["LINEBREAK"]
 ]);
 

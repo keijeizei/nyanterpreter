@@ -10,7 +10,7 @@
 .CodeMirror-simplescroll-horizontal, .CodeMirror-simplescroll-vertical {
   position: absolute;
   z-index: 6;
-  background: #eee;
+  background: #000;
 }
 
 .CodeMirror-simplescroll-horizontal {

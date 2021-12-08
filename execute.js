@@ -3,6 +3,7 @@ function execute() {
 	interpreter_tokens = [];
 	gui_tokens = [];
 	symbol_table = {};
+	function_symbol_tables = {};
 
 	expected = "";
 	instead_saw = "";
@@ -16,11 +17,12 @@ function execute() {
 	var lexer = new LexicalAnalyzer(code_text);
 	lexer.start();
 	removeTable();
-	if (interpreter_tokens) {
-		var valid_syntax = syntaxAnalyzer(interpreter_tokens, null, null);
-		if (valid_syntax) {
+	if (!terminal.error_encountered) {
+		syntaxAnalyzer(interpreter_tokens, null, {});
+		if (!terminal.error_encountered) {
 			semanticAnalyzer(interpreter_tokens);
     		addTable();
+			console.log(function_symbol_tables);
 		}
 	}
 

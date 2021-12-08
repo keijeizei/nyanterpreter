@@ -1,6 +1,7 @@
 // global variable to keep the expected token for syntax error
 var expected = "";
 var instead_saw = "";
+var error_line_number = 0;
 var error_index = 0;
 var last_index = 0;
 var tab_count = 0;		// used only for debugging
@@ -17,14 +18,14 @@ function syntaxAnalyzer(tokens) {
 		if (expected === "") {
 			// expected = "HAI"
 			// instead_saw = tokens[0][0]
-			terminal.error(`Unexepected token ${tokens[last_index][0]}`);
+			terminal.error(`Unexepected token ${tokens[last_index][0]}`, error_line_number, true);
 			return false;
 		}
-		terminal.error(`Syntax error: Expected ${expected}, instead saw ${instead_saw}`);
+		terminal.error(`Expected ${expected}, instead saw ${instead_saw}`, error_line_number, true);
 		return false;
 	}
 	else if (index < tokens.length) {
-		terminal.error(`Unexepected token ${tokens[tokens.length - 1]} after KTHXBYE.`);
+		terminal.error(`Unexepected token ${tokens[tokens.length - 1]} after KTHXBYE.`, error_line_number, true);
 		return false;
 	}
 	else {

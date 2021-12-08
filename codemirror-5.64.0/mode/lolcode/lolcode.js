@@ -46,7 +46,7 @@ CodeMirror.defineMode('lolcode', function(config, parserConfig) {
                 '(PLZ\\s+HALP)' +
                 ')\\b'
             ),
-            HOWDUZI: /HOW\s+DUZ\s+I\b/,
+            HOWDUZI: /HOW\s+IZ\s+I\b/,
             IFUSAYSO: /IF\s+U\s+SAY\s+SO\b/,
             ORLY: /O\s+RLY\?|IZ\b/,
             YARLY: /YA\s+RLY\b/,

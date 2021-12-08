@@ -3,7 +3,7 @@ var code_text = "";
 
 // codemirror invoker
 var editor = CodeMirror.fromTextArea(document.getElementById('file-content'), {
-	theme: "eclipse",
+	theme: "monokai",
 	lineNumbers: true
 })
 
@@ -81,8 +81,7 @@ for (var i = 0; i < gui_tokens.length; i++) {
 	symbolTableBody.id = 'symbolTableBodyID'
 	symbolTable.appendChild(symbolTableBody);
 
-	console.log(symbol_table)
-	for (var key in symbol_table) {
+	for (var key in main_symbol_table) {
 		console.log(key)
 		var symbolTabletr = document.createElement('TR');
 		symbolTabletr.id="symbolTabletrID"
@@ -97,21 +96,21 @@ for (var i = 0; i < gui_tokens.length; i++) {
 		var symbolTabletd2 = document.createElement('TD');
 		symbolTabletd2.width= '33%'
 		symbolTabletr.appendChild(symbolTabletd2)
-        if (symbol_table[key].value == true) {
+        if (main_symbol_table[key].value == true) {
             symbolTabletd2.appendChild(document.createTextNode("WIN"));
-        } else if (symbol_table[key].value == false){
+        } else if (main_symbol_table[key].value == false){
             symbolTabletd2.appendChild(document.createTextNode("FAIL"));
-        } else if (symbol_table[key].value == null){
+        } else if (main_symbol_table[key].value == null){
             symbolTabletd2.appendChild(document.createTextNode("NOOB"));
         } else {
-            symbolTabletd2.appendChild(document.createTextNode(symbol_table[key].value));
+            symbolTabletd2.appendChild(document.createTextNode(main_symbol_table[key].value));
         }
 		symbolTabletr.appendChild(symbolTabletd2);
 
 		var symbolTabletd3 = document.createElement('TD');
 		symbolTabletd3.width= '33%'
 		symbolTabletr.appendChild(symbolTabletd3)
-		symbolTabletd3.appendChild(document.createTextNode(symbol_table[key].type));
+		symbolTabletd3.appendChild(document.createTextNode(main_symbol_table[key].type));
 		symbolTabletr.appendChild(symbolTabletd3);
 				
 	}
