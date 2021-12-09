@@ -457,6 +457,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 
 					for (var i = 0; i < operands.length; i++) {
 						if (operands[i][0] === "VARIDENT") {
+							// TODO check if variable exist in symbol table
 							operands[i] = [symbol_table[operands[i][1]]["type"], symbol_table[operands[i][1]]["value"]];
 						}
 					}

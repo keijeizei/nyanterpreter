@@ -102,11 +102,12 @@ class LexicalAnalyzer {
 	 * Remove duplicate linebreaks, and linebreaks before HAI and after KTHXBYE
 	 */
 	cleanExcessLinebreaks() {
-		// this filter function gets all LINEBREAK if next token is not LINEBREAK, and all non-LINEBREAK tokens
+		// this filter function gets all LINEBREAK if previous token is not LINEBREAK, and all non-LINEBREAK tokens
 		this.tokens = this.tokens.filter((token, i) =>
-			(this.tokens[i + 1] &&
-				(token[0] === "LINEBREAK" && this.tokens[i + 1][0] !== "LINEBREAK")
-			) || token[0] !== "LINEBREAK"
+			this.tokens[i - 1] && (
+				(this.tokens[i - 1][0] === "LINEBREAK" && token[0] !== "LINEBREAK") ||
+				this.tokens[i - 1][0] !== "LINEBREAK"
+			)
 		);
 
 		// remove LINEBREAK before HAI and after KTHXBYE
@@ -172,14 +173,12 @@ class LexicalAnalyzer {
 		var valid_lexeme = true;
 
 		while (this.code.length) {
-			console.log('buffer:', this.buffer)
+			// console.log('buffer:', this.buffer)
 
 			// ============== current character is not a space or tab ==============
 			if (this.code[0] !== " " && this.code[0] !== "\t") {
 				// character is a newline
 				if (this.code[0] === "\n" || this.code[0] === "\r") {
-					this.line_number++;
-
 					// TLDR then a linebreak ends a multiline comment
 					// TLDR may contain leading tabs, so a regex without caret is used
 					if (this.buffer.match(/TLDR$/)) {
@@ -250,6 +249,7 @@ class LexicalAnalyzer {
 
 					this.skip();	// skip the newline
 					this.clearBuffer();
+					this.line_number++;
 				}
 				// double quotes outside of comment
 				else if (this.code[0] === '"' && !(is_comment || is_multiline_comment)) {
@@ -373,7 +373,7 @@ class LexicalAnalyzer {
 			return;
 		}
 
-		console.table(this.tokens)
+		// console.table(this.tokens)
 		this.merge();
 		this.replaceSpecialCharacters();
 		this.convertIdent();
@@ -385,7 +385,7 @@ class LexicalAnalyzer {
 
 		interpreter_tokens = this.tokens;
 
-		console.log("FINAL INTERPRETER TOKENS:");
-		console.table(interpreter_tokens);
+		// console.log("FINAL INTERPRETER TOKENS:");
+		// console.table(interpreter_tokens);
 	}
 }

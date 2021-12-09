@@ -11,7 +11,11 @@ class Abstraction {
 		var original_index = index;
 		var valid = false;
 		var strict = false;
-		var temp_index;;
+		var temp_index;
+
+		var temp_expected = "";
+		var temp_instead_saw = "";
+		var temp_error_line_number = 0;
 
 		for (var rule of this.rules) {
 			for (var symbol of rule) {
@@ -22,7 +26,7 @@ class Abstraction {
 				}
 
 				// process.stdout.write("\t".repeat(tab_count))
-				console.log("\t".repeat(tab_count), symbol.name ? `${symbol.name}` : `${symbol} vs ${tokens[index][0]}`)
+				// console.log("\t".repeat(tab_count), symbol.name ? `${symbol.name}` : `${symbol} vs ${tokens[index][0]}`)
 
 				if (typeof (symbol) === "object") {
 					tab_count++;
@@ -35,11 +39,12 @@ class Abstraction {
 					}
 					else {
 						// console.log("symbol", symbol.name, "is INVALID", index, original_index)
-						if (strict && !expected) {
-							expected = symbol.name;
-							instead_saw = `${tokens[error_index][0]} ${tokens[error_index][1] ? tokens[error_index][1] : ""}`;
-							console.log("SYNTAX ERROR HAPPENED HERE");
-						}
+						// if (strict && !expected) {
+						// 	expected = symbol.name;
+						// 	instead_saw = `${tokens[error_index][0]} ${tokens[error_index][1] ? tokens[error_index][1] : ""}`;
+						// 	error_line_number = tokens[index][2]
+						// 	console.log("SYNTAX ERROR HAPPENED HERE");
+						// }
 						valid = false;
 						break;
 					}
@@ -47,13 +52,13 @@ class Abstraction {
 				else {
 					if (tokens[index][0] === symbol) {
 						if (tokens[index][0] === "LINEBREAK") {
-							first_symbol = true;
+							strict = false;
 						}
 						else {
-							if (first_symbol) {
+							if (!strict) {
 								strict = true;
 							}
-							first_symbol = false;
+							// strict = false;
 						}
 						// console.log("valid is TRUE")
 						// process.stdout.write("\t".repeat(tab_count))
@@ -64,11 +69,11 @@ class Abstraction {
 					else {
 						// console.log("valid is FALSE")
 						valid = false;
-						error_index = index;
+						// error_index = index;
 						if (strict && !expected) {
-							expected = symbol;
-							instead_saw = `${tokens[index][0]} ${tokens[index][1] ? tokens[index][1] : ""}`;
-							console.log("SYNTAX ERROR HAPPENED HERE");
+							temp_expected = symbol;
+							temp_instead_saw = `${tokens[index][0]} ${tokens[index][1] ? tokens[index][1] : ""}`;
+							temp_error_line_number = tokens[index][2]
 						}
 						break;
 					}
@@ -88,6 +93,12 @@ class Abstraction {
 			return index;
 		}
 		// console.log(`rule ${this.name} failed: returns ${index}`)
+		if (strict && !expected) {
+			expected = temp_expected;
+			instead_saw = temp_instead_saw;
+			error_line_number = temp_error_line_number;
+			// console.log("SYNTAX ERROR HAPPENED HERE");
+		}
 		return original_index;
 	}
 }
@@ -269,7 +280,9 @@ assignment_expression.rules = [
 	[cast],
 	[less],
 	[boolean_operation],
+	[infinite_operation],
 	[equals],
+	[function_call],
 	[not_equals],
 	[smoosh],
 ];
@@ -459,6 +472,7 @@ code_block.rules = [
 ];
 
 program = new Abstraction("program", [
+	["HAI", "NUMBAR", "LINEBREAK", code_block, "KTHXBYE"],
 	["HAI", "LINEBREAK", code_block, "KTHXBYE"],
 	["HAI", "LINEBREAK", "KTHXBYE"]
 ]);
