@@ -102,12 +102,12 @@ class LexicalAnalyzer {
 	 * Remove duplicate linebreaks, and linebreaks before HAI and after KTHXBYE
 	 */
 	cleanExcessLinebreaks() {
-		// this filter function gets all LINEBREAK if previous token is not LINEBREAK, and all non-LINEBREAK tokens
+		// this filter function gets all LINEBREAK if previous token is not LINEBREAK, and all non-LINEBREAK tokens, or the HAI token where this.tokens[i - 1] is undefined
 		this.tokens = this.tokens.filter((token, i) =>
 			this.tokens[i - 1] && (
 				(this.tokens[i - 1][0] === "LINEBREAK" && token[0] !== "LINEBREAK") ||
 				this.tokens[i - 1][0] !== "LINEBREAK"
-			)
+			) || !this.tokens[i - 1]
 		);
 
 		// remove LINEBREAK before HAI and after KTHXBYE
@@ -373,7 +373,7 @@ class LexicalAnalyzer {
 			return;
 		}
 
-		// console.table(this.tokens)
+		console.table(this.tokens)
 		this.merge();
 		this.replaceSpecialCharacters();
 		this.convertIdent();
@@ -385,7 +385,7 @@ class LexicalAnalyzer {
 
 		interpreter_tokens = this.tokens;
 
-		// console.log("FINAL INTERPRETER TOKENS:");
-		// console.table(interpreter_tokens);
+		console.log("FINAL INTERPRETER TOKENS:");
+		console.table(interpreter_tokens);
 	}
 }

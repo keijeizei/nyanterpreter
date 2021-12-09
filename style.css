@@ -172,6 +172,10 @@ input[type="file"] {
 	text-align: center;
 }
 
+#file-content {
+	display: none;
+}
+
 #lexemeDiv {
 	padding: 10px;
 	overflow-y: scroll;
@@ -220,6 +224,10 @@ input[type="file"] {
 #terminalDiv::-webkit-scrollbar-thumb {
 	background-color: var(--accent) !important;    /* color of the scroll thumb */
 	border-radius: 20px !important;       /* roundness of the scroll thumb */
+}
+
+#terminalDiv::-webkit-scrollbar-corner {
+	background-color: transparent;
 }
 
 /* for Firefox */

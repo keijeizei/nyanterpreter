@@ -195,6 +195,16 @@ function semanticAnalyzer(tokens, function_name, args) {
 					}
 					// variable initialization
 					else {
+						if (operand2[0] === "VARIDENT") {
+							if (!symbol_table[operand2[1]]) {
+								terminal.error(`variable ${operand2[1]} is not defined.`, current_token[2], false);
+								return;
+							}
+							operand2 = [
+								symbol_table[operand2[1]]["type"],
+								symbol_table[operand2[1]]["value"]
+							];
+						}
 						symbol_table[operand1[1]] = {
 							"type": operand2[0],
 							"value": operand2[1]
@@ -457,8 +467,14 @@ function semanticAnalyzer(tokens, function_name, args) {
 
 					for (var i = 0; i < operands.length; i++) {
 						if (operands[i][0] === "VARIDENT") {
-							// TODO check if variable exist in symbol table
-							operands[i] = [symbol_table[operands[i][1]]["type"], symbol_table[operands[i][1]]["value"]];
+							if (!symbol_table[operands[i][1]]) {
+								terminal.error(`variable ${operands[i][1]} is not defined.`, current_token[2], false);
+								return;
+							}
+							operands[i] = [
+								symbol_table[operands[i][1]]["type"],
+								symbol_table[operands[i][1]]["value"]
+							];
 						}
 					}
 					console.log(operands)
@@ -877,8 +893,6 @@ function semanticAnalyzer(tokens, function_name, args) {
 			symbol_table["IT"]["type"] = current_token[0];
 			symbol_table["IT"]["value"] = current_token[1];
 		}
-		// TODO remove this after testing is complete
-		// if(symbol_table["remark"] && symbol_table["remark"]["value"] === "hu r u?2") console.log("AAAAAAAAAAAAAAaa")
 	}
 	console.log("SYMBOL TABLE of ", function_name ? function_name : "main");
 	console.table(symbol_table);
