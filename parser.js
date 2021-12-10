@@ -37,6 +37,29 @@ function numbarToYarn(numbar) {
     return parseFloat(final_result).toFixed(2);
 }
 
+function getUserInput() {
+	// make the termianl glow on input
+	document.getElementById("terminalDiv").style = "border: 2px solid white !important";
+
+	var dummyinput = document.getElementById("dummyinput")
+	dummyinput.focus();
+	dummyinput.value = "";
+	return new Promise((resolve) => {
+		var input = ""
+		document.addEventListener('keydown', onKeyHandler);
+		function onKeyHandler(e) {
+			if (e.keyCode === 13) {
+				document.getElementById("terminalDiv").style = "";
+			
+				document.removeEventListener('keydown', onKeyHandler);
+				terminal.write(dummyinput.value + "\n");
+				resolve(dummyinput.value);
+			}
+		}
+	});
+}
+
+
 /**
  * Main semantic analyzer which runs the commands.
  * Function calls are done by calling semanticAnalyzer again.
@@ -44,7 +67,7 @@ function numbarToYarn(numbar) {
  * @param function_name - The function's function name if it was invoked by a function, null if it is the main function
  * @param args - The function's arguments, null if it is the main function
  */
-function semanticAnalyzer(tokens, function_name, args) {
+async function semanticAnalyzer(tokens, function_name, args) {
 	var index = 0;				// current index in the code
 	var prev_index = 0;			// the previous index
 	var stack = [];				// main stack where line tokens get pushed
@@ -281,7 +304,8 @@ function semanticAnalyzer(tokens, function_name, args) {
 
 				case "GIMMEH": 
 					operand1 = buffer.pop();
-					var input = prompt(`GIMMEH ${operand1[1]}:`);
+					var input = await getUserInput();
+					console.log(input)
 					
 					if (!symbol_table[operand1[1]]) {
 						terminal.error(`variable ${operand1[1]} is not defined.`, current_token[2], false);
@@ -906,5 +930,7 @@ function semanticAnalyzer(tokens, function_name, args) {
 	// set main symbol table to the symbol table if function is main
 	else {
 		main_symbol_table = symbol_table;
+		addTable();
+		document.getElementById("executebutton").disabled = false;
 	}
 }

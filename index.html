@@ -59,11 +59,16 @@
 			</div>
 		</div>
 		<div class="item4">
-			<button class="black btn" onclick="execute()">EXECUTE</button>
+			<button id="executebutton" class="black btn" onclick="execute()">EXECUTE</button>
 			<h5>TERMINAL</h5>
 		</div>
 		<div class="item5">
-			<textarea id="terminalDiv" readonly></textarea>
+			<textarea id="terminalDiv" onclick="focusDummyInput()" readonly></textarea>
+			<input
+				id="dummyinput"
+				type="text"
+				oninput="terminal.handleInput()"
+				type="hidden"></input>
 		</div>
 	</div>
 </body>

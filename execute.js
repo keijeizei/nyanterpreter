@@ -1,4 +1,7 @@
 function execute() {
+	// disable execute button to prevent double execution
+	document.getElementById("executebutton").disabled = true;
+
 	// reset global variables
 	interpreter_tokens = [];
 	gui_tokens = [];
@@ -21,12 +24,12 @@ function execute() {
 		syntaxAnalyzer(interpreter_tokens, null, {});
 		if (!terminal.error_encountered) {
 			semanticAnalyzer(interpreter_tokens);
-    		addTable();
-			console.log(function_symbol_tables);
 		}
 	}
-
-
-
+	
+	// enable execute button if error is encountered
+	if(terminal.error_encountered) {
+		document.getElementById("executebutton").disabled = false;
+	}
 }
 

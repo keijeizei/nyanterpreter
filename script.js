@@ -96,11 +96,11 @@ for (var i = 0; i < gui_tokens.length; i++) {
 		var symbolTabletd2 = document.createElement('TD');
 		symbolTabletd2.width= '33%'
 		symbolTabletr.appendChild(symbolTabletd2)
-        if (main_symbol_table[key].value == true) {
+        if (main_symbol_table[key].value === true) {
             symbolTabletd2.appendChild(document.createTextNode("WIN"));
-        } else if (main_symbol_table[key].value == false){
+        } else if (main_symbol_table[key].value === false){
             symbolTabletd2.appendChild(document.createTextNode("FAIL"));
-        } else if (main_symbol_table[key].value == null){
+        } else if (main_symbol_table[key].value === null){
             symbolTabletd2.appendChild(document.createTextNode("NOOB"));
         } else {
             symbolTabletd2.appendChild(document.createTextNode(main_symbol_table[key].value));
@@ -127,6 +127,10 @@ function removeTable(){
 	}else{
 		return
 	}
+}
+
+function focusDummyInput() {
+	document.getElementById("dummyinput").focus();
 }
 
 function displaycode_text(code_text) {

@@ -86,6 +86,12 @@ tbody {
 	font-family: "Comic Sans MS", cursive, sans-serif;//hehe
 }
 
+.btn:disabled,
+.btn[disabled]{
+  background-color: #800040;
+  color: #666666;
+}
+
 .grid {
 	display: grid;
 	grid-column-gap: 10px;
@@ -199,6 +205,13 @@ input[type="file"] {
 	background-color: var(--containercolor);
 }
 
+/* dummyinput is hidden on the back of the codemirror box */
+#dummyinput {
+	position: absolute;
+	left: 50px;
+	top: 50px;
+	z-index: -1;
+}
 
 /* CUSTOM SCROLLBAR COLORS */
 /* derived from https://www.digitalocean.com/community/tutorials/css-scrollbars */
