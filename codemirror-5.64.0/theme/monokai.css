@@ -19,7 +19,8 @@
 .cm-s-monokai span.cm-comment.cm-tag { color: #bc6283; }
 .cm-s-monokai span.cm-comment.cm-type { color: #5998a6; }
 
-.cm-s-monokai span.cm-property, .cm-s-monokai span.cm-attribute { color: #a6e22e; }
+/* Add a color for the LOLCODE operators */
+.cm-s-monokai span.cm-property, .cm-s-monokai span.cm-attribute, .cm-s-monokai span.cm-operator { color: #a6e22e; }
 .cm-s-monokai span.cm-keyword { color: #f92672; }
 .cm-s-monokai span.cm-builtin { color: #66d9ef; }
 .cm-s-monokai span.cm-string { color: #e6db74; }

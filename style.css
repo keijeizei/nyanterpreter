@@ -205,6 +205,13 @@ input[type="file"] {
 	background-color: var(--containercolor);
 }
 
+.blinking-terminal {
+	border: 2px solid hotpink;
+	animation: blinkingterminal 2s infinite;
+}
+
+@keyframes blinkingterminal { 50% { border-color: transparent; }  }
+
 /* dummyinput is hidden on the back of the codemirror box */
 #dummyinput {
 	position: absolute;

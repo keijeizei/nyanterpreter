@@ -18,14 +18,14 @@ function syntaxAnalyzer(tokens) {
 		if (expected === "") {
 			// expected = "HAI"
 			// instead_saw = tokens[0][0]
-			terminal.error(`Unexepected token ${tokens[last_index][0]}`, error_line_number, true);
+			terminal.error(`Unexepected token ${tokens[last_index][0]}`, tokens[last_index][2], true);
 			return false;
 		}
 		terminal.error(`Expected ${expected}, instead saw ${instead_saw}`, error_line_number, true);
 		return false;
 	}
 	else if (index < tokens.length) {
-		terminal.error(`Unexepected token ${tokens[tokens.length - 1]} after KTHXBYE.`, error_line_number, true);
+		terminal.error(`Unexepected token ${tokens[tokens.length - 1][0]} after KTHXBYE.`, tokens[tokens.length - 1][2], true);
 		return false;
 	}
 	else {

@@ -39,7 +39,8 @@ function numbarToYarn(numbar) {
 
 function getUserInput() {
 	// make the termianl glow on input
-	document.getElementById("terminalDiv").style = "border: 2px solid white !important";
+	var terminal_div = document.getElementById("terminalDiv");
+	terminal_div.classList.add("blinking-terminal");
 
 	var dummyinput = document.getElementById("dummyinput")
 	dummyinput.focus();
@@ -49,7 +50,7 @@ function getUserInput() {
 		document.addEventListener('keydown', onKeyHandler);
 		function onKeyHandler(e) {
 			if (e.keyCode === 13) {
-				document.getElementById("terminalDiv").style = "";
+				terminal_div.classList.remove("blinking-terminal");
 			
 				document.removeEventListener('keydown', onKeyHandler);
 				terminal.write(dummyinput.value + "\n");
