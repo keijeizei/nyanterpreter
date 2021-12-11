@@ -114,7 +114,7 @@ class LexicalAnalyzer {
 		if (this.tokens[0] && this.tokens[0][0] === "LINEBREAK") {
 			this.tokens.shift();
 		}
-		if (this.tokens[this.tokens.length - 1] && this.tokens[this.tokens.length - 1][0] === "LINEBREAK") {
+		if (this.tokens[this.tokens.length - 1] && this.tokens[this.tokens.length - 1][0] === "LINEBREAK" && this.tokens[this.tokens.length - 2][0] === "KTHXBYE") {
 			this.tokens.pop();
 		}
 	}

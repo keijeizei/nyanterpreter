@@ -20,12 +20,12 @@ class Abstraction {
 		for (var rule of this.rules) {
 			for (var symbol of rule) {
 				if (tokens[index] === undefined) {
-					expected = symbol;
+					expected = typeof(symbol) === "object" ? symbol.name : symbol;
 					instead_saw = "EOF";
+					error_line_number = tokens[index - 1][2]
 					return original_index;
 				}
 
-				// process.stdout.write("\t".repeat(tab_count))
 				// console.log("\t".repeat(tab_count), symbol.name ? `${symbol.name}` : `${symbol} vs ${tokens[index][0]}`)
 
 				if (typeof (symbol) === "object") {
@@ -34,17 +34,9 @@ class Abstraction {
 					index = symbol.check(tokens, index);
 					tab_count--;
 					if (index > temp_index) {
-						// console.log("symbol", symbol.name, "is valid", index, original_index)
 						valid = true;
 					}
 					else {
-						// console.log("symbol", symbol.name, "is INVALID", index, original_index)
-						// if (strict && !expected) {
-						// 	expected = symbol.name;
-						// 	instead_saw = `${tokens[error_index][0]} ${tokens[error_index][1] ? tokens[error_index][1] : ""}`;
-						// 	error_line_number = tokens[index][2]
-						// 	console.log("SYNTAX ERROR HAPPENED HERE");
-						// }
 						valid = false;
 						break;
 					}
@@ -58,22 +50,18 @@ class Abstraction {
 							if (!strict) {
 								strict = true;
 							}
-							// strict = false;
 						}
-						// console.log("valid is TRUE")
-						// process.stdout.write("\t".repeat(tab_count))
-						// console.log(tokens[index][0])
 						valid = true;
 						index++;
 					}
 					else {
 						// console.log("valid is FALSE")
 						valid = false;
-						// error_index = index;
 						if (strict && !expected) {
 							temp_expected = symbol;
 							temp_instead_saw = `${tokens[index][0]} ${tokens[index][1] ? tokens[index][1] : ""}`;
-							temp_error_line_number = tokens[index][2]
+							temp_error_line_number = tokens[index][2];
+							console.log("here", symbol)
 						}
 						break;
 					}
@@ -97,7 +85,7 @@ class Abstraction {
 			expected = temp_expected;
 			instead_saw = temp_instead_saw;
 			error_line_number = temp_error_line_number;
-			// console.log("SYNTAX ERROR HAPPENED HERE");
+			console.log("SYNTAX ERROR HAPPENED HERE");
 		}
 		return original_index;
 	}
