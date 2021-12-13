@@ -42,17 +42,18 @@ function getUserInput() {
 	var terminal_div = document.getElementById("terminalDiv");
 	terminal_div.classList.add("blinking-terminal");
 
-	var dummyinput = document.getElementById("dummyinput")
+	var dummyinput = document.getElementById("dummyinput");
 	dummyinput.focus();
 	dummyinput.value = "";
 	return new Promise((resolve) => {
-		var input = ""
-		document.addEventListener('keydown', onKeyHandler);
+		var input = "";
+		document.addEventListener('keyup', onKeyHandler);
 		function onKeyHandler(e) {
+			terminal.handleInput();
 			if (e.keyCode === 13) {
 				terminal_div.classList.remove("blinking-terminal");
 			
-				document.removeEventListener('keydown', onKeyHandler);
+				document.removeEventListener('keyup', onKeyHandler);
 				terminal.write(dummyinput.value + "\n");
 				resolve(dummyinput.value);
 			}
@@ -312,8 +313,18 @@ async function semanticAnalyzer(tokens, function_name, args) {
 						terminal.error(`variable ${operand1[1]} is not defined.`, current_token[2], false);
 					}
 					else {
-						symbol_table[operand1[1]]["type"] = "YARN";
-						symbol_table[operand1[1]]["value"] = input;
+						if (input.match(/^-?[0-9]+$/g)) {
+							symbol_table[operand1[1]]["type"] = "NUMBR";
+							symbol_table[operand1[1]]["value"] = Number(input);
+						}
+						else if (input.match(/^-?[0-9]*\.?[0-9]+$/g)) {
+							symbol_table[operand1[1]]["type"] = "NUMBAR";
+							symbol_table[operand1[1]]["value"] = Number(input);
+						}
+						else {
+							symbol_table[operand1[1]]["type"] = "YARN";
+							symbol_table[operand1[1]]["value"] = input;
+						}
 					}
 					break;
 
@@ -542,7 +553,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 						case "NUMBR":
 						case "NUMBAR":
 							answer = Number(operand1[1]);
-							if (operand2[1] === "NUMBAR") {
+							if (operand2[1] === "NUMBR") {
 								answer = Math.floor(answer);
 							}
 							if (isNaN(answer)) {
@@ -587,7 +598,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 						case "NUMBR":
 						case "NUMBAR":
 							answer = Number(operand1[1]);
-							if (operand2[1] === "NUMBAR") {
+							if (operand2[1] === "NUMBR") {
 								answer = Math.floor(answer);
 							}
 							if (isNaN(answer)) {
@@ -821,6 +832,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 				case "IF_U_SAY_SO":
 					// return the IT and break if inside a function
 					if(function_name) {
+						function_symbol_tables[function_name] = symbol_table;
 						return [symbol_table["IT"]["type"], symbol_table["IT"]["value"]];
 						break;
 					}
@@ -871,7 +883,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					);
 // console.log(args_to_be_passed)
 					// run the function by calling semantiAnalyzer on the function code block
-					var return_value = semanticAnalyzer(
+					var return_value = await semanticAnalyzer(
 						tokens.slice(
 							function_table[function_to_be_called]["start_index"],
 							function_table[function_to_be_called]["end_index"]
@@ -880,7 +892,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 						args_to_be_passed
 					);
 
-					buffer.push(return_value);
+					stack.push(return_value);
 					break;
 
 				case "FOUND_YR":
@@ -933,5 +945,6 @@ async function semanticAnalyzer(tokens, function_name, args) {
 		main_symbol_table = symbol_table;
 		addTable();
 		document.getElementById("executebutton").disabled = false;
+		console.log(function_symbol_tables)
 	}
 }

@@ -22,7 +22,7 @@ class Abstraction {
 				if (tokens[index] === undefined) {
 					expected = typeof(symbol) === "object" ? symbol.name : symbol;
 					instead_saw = "EOF";
-					error_line_number = tokens[index - 1][2]
+					error_line_number = tokens[index - 1] ? tokens[index - 1][2] : 1 // use 1 if no tokens
 					return original_index;
 				}
 
@@ -61,7 +61,6 @@ class Abstraction {
 							temp_expected = symbol;
 							temp_instead_saw = `${tokens[index][0]} ${tokens[index][1] ? tokens[index][1] : ""}`;
 							temp_error_line_number = tokens[index][2];
-							console.log("here", symbol)
 						}
 						break;
 					}
