@@ -9,6 +9,7 @@ class Terminal {
 
 	updateGUI() {
 		this.terminal.value = this.content;
+		this.terminal.scrollTop = this.terminal.scrollHeight;
 	}
 
 	clear() {

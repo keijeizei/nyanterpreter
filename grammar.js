@@ -284,7 +284,8 @@ loop_condition = new Abstraction("loop condition", [
 ]);
 
 loop_statement = new Abstraction("loop statement", [
-	["IM_IN_YR", "LOOPIDENT", loop_condition, "LINEBREAK", no_dec_code_block, "IM_OUTTA_YR", "LOOPIDENT"]
+	["IM_IN_YR", "LOOPIDENT", loop_condition, "LINEBREAK", no_dec_code_block, "IM_OUTTA_YR", "LOOPIDENT"],
+	["IM_IN_YR", "LOOPIDENT", "LINEBREAK", no_dec_code_block, "IM_OUTTA_YR", "LOOPIDENT"]
 ]);
 
 switch_OMGWTF = new Abstraction("switch OMGWTF", [
@@ -357,7 +358,8 @@ function_if_statement = new Abstraction("function if statement",[
 ]);
 
 function_loop_statement = new Abstraction("function loop statement", [
-	["IM_IN_YR", "LOOPIDENT", loop_condition, "LINEBREAK", function_no_dec_code_block, "IM_OUTTA_YR", "LOOPIDENT"]
+	["IM_IN_YR", "LOOPIDENT", loop_condition, "LINEBREAK", function_no_dec_code_block, "IM_OUTTA_YR", "LOOPIDENT"],
+	["IM_IN_YR", "LOOPIDENT", "LINEBREAK", function_no_dec_code_block, "IM_OUTTA_YR", "LOOPIDENT"]
 
 ]);
 

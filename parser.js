@@ -2,6 +2,22 @@ var main_symbol_table = {};
 
 var function_symbol_tables = {};
 
+var main_tokens = [];
+
+/*
+function_table will contain all function definitions in the code
+It will contain properties of this format:
+[function_identifier] = {
+	"args_list": [],		<- list of argument names
+	"start_index": int,		<- the index of the first token of the function code block
+	"end_index": int		<- the index of the IF U SAY SO of the function code block
+}
+*/
+var function_table = [];		// list of all functions
+var function_skip = false;		// skips a function definition
+var function_identifier = null;	// the name of the function that is skipping
+var f_id = 0;
+
 /**
  * Gets a line of tokens starting from index until the next LINEBREAK
  * Returns a list containing the list of tokens and the index of the next line
@@ -102,18 +118,10 @@ async function semanticAnalyzer(tokens, function_name, args) {
 		// }
 	// }
 
-	/*
-	function_table will contain all function definitions in the code
-	It will contain properties of this format:
-	[function_identifier] = {
-		"args_list": [],		<- list of argument names
-		"start_index": int,		<- the index of the first token of the function code block
-		"end_index": int		<- the index of the IF U SAY SO of the function code block
+	// save a global copy of the main_tokens. this is needed by recursive functions
+	if (!function_name) {
+		main_tokens = tokens
 	}
-	*/
-	var function_table = [];		// list of all functions
-	var function_skip = false;		// skips a function definition
-	var function_identifier = null;	// the name of the function that is skipping
 
 	/*
 	condition_stack will contain the stack of IF and SWITCH calls to support nesting
@@ -734,7 +742,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					// GTFO ends a function with return 0 only if outside a switch statement
 					// only switch statements have an antiskip key
 					if(function_name && (csd === -1 || condition_stack[csd] && "antiskip" in condition_stack)) {
-						function_symbol_tables[function_name] = symbol_table;
+						function_symbol_tables[`${function_name}#${++f_id}`] = symbol_table;
 						
 						return ["NUMBR", 0];
 					}
@@ -759,7 +767,9 @@ async function semanticAnalyzer(tokens, function_name, args) {
 
 				// loop commands
 				case "IM_IN_YR":
+					console.log("here")
 					var label = buffer.pop();
+					console.log(label)
 					var operation = buffer.pop();
 					var variable = buffer.pop();
 					var til_wile = buffer.pop();
@@ -771,7 +781,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 						loop_stack.push({
 							"loopident": label[1],
 							"start_index": prev_index,
-							"iter_varident": variable[1],
+							"iter_varident": variable ? variable[1] : null, // null if infinite loop
 							"next_iter_value": null,
 							"skip": false
 						});
@@ -846,8 +856,10 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					
 					// jump back to start of the loop if skip is disabled
 					if (!loop_stack[lsd]["skip"]) {
-						// update the iter_varident with the new value
-						symbol_table[loop_stack[lsd]["iter_varident"]]["value"] = loop_stack[lsd]["next_iter_value"];
+						// update the iter_varident with the new value if not infinite loop
+						if (loop_stack[lsd]["iter_varident"]) {
+							symbol_table[loop_stack[lsd]["iter_varident"]]["value"] = loop_stack[lsd]["next_iter_value"];
+						}
 						index = loop_stack[lsd]["start_index"];
 					}
 					// exit the loop if skip is enabled
@@ -884,7 +896,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 				case "IF_U_SAY_SO":
 					// return the IT and break if inside a function
 					if(function_name) {
-						function_symbol_tables[function_name] = symbol_table;
+						function_symbol_tables[`${function_name}#${++f_id}`] = symbol_table;
 						return [symbol_table["IT"]["type"], symbol_table["IT"]["value"]];
 						break;
 					}
@@ -933,10 +945,15 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					function_table[function_to_be_called]["args_list"].forEach((key, i) => 
 						args_to_be_passed[key] = args_values[i]
 					);
-// console.log(args_to_be_passed)
+
+					// TODO make this functional
+					if (Object.keys(function_symbol_tables).length > 420) {
+						terminal.error("Maximum recursion depth reached.", current_token[2], false);
+					}
+
 					// run the function by calling semantiAnalyzer on the function code block
 					var return_value = await semanticAnalyzer(
-						tokens.slice(
+						main_tokens.slice(
 							function_table[function_to_be_called]["start_index"],
 							function_table[function_to_be_called]["end_index"]
 						),
@@ -949,7 +966,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 
 				case "FOUND_YR":
 					// variable name to be returned
-					function_symbol_tables[function_name] = symbol_table;
+					function_symbol_tables[`${function_name}#${++f_id}`] = symbol_table;
 					
 					operand1 = buffer.pop()
 					if (operand1[0] === "VARIDENT") {
@@ -989,7 +1006,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 
 	// in the absence of any explicit break, when the end of the code block is reached, the value in IT is returned.
 	if(function_name) {
-		function_symbol_tables[function_name] = symbol_table;
+		function_symbol_tables[`${function_name}#${++f_id}`] = symbol_table;
 		return symbol_table["IT"];
 	}
 	// set main symbol table to the symbol table if function is main
