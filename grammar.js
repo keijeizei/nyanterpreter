@@ -47,7 +47,7 @@ class Abstraction {
 							strict = false;
 						}
 						else {
-							if (!strict) {
+							if (!strict && tokens[index][0] !== "VARIDENT") {
 								strict = true;
 							}
 						}
@@ -97,6 +97,7 @@ code_block = new Abstraction("code block", []);
 no_dec_code_block = new Abstraction("no declaration code block", []);
 no_infinite_expression = new Abstraction("no infinite expression", []);
 assignment_expression = new Abstraction("assignment expression", []);
+function_no_dec_statement = new Abstraction("function no dec statement", []);
 
 literal = new Abstraction("literal", [
 	["NUMBR"],
@@ -239,6 +240,7 @@ no_infinite_expression.rules = [
 	[equals],
 	[not_equals],
 	[smoosh],
+	[function_call]
 ];
 
 expression.rules = [
@@ -338,19 +340,6 @@ declaration = new Abstraction("declaration", [
 	["I_HAS_A", "VARIDENT"],
 ]);
 
-function_no_dec_statement = new Abstraction("function no dec statement", [
-	[assignment],
-	[cast],
-	[cast_assign],
-	[expression],
-	[if_statement],
-	[input],
-	[loop_statement],
-	[print],
-	[function_return],
-	[switch_case],
-	["LINEBREAK"]
-]);
 
 function_no_dec_code_block = new Abstraction("function no dec code block", [
 	[function_no_dec_statement, "LINEBREAK", "this"],
@@ -363,7 +352,8 @@ function_else_statement = new Abstraction("function else statement", [
 ]);
 
 function_if_statement = new Abstraction("function if statement",[
-	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", function_no_dec_code_block, function_else_statement]
+	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", function_no_dec_code_block, function_else_statement],
+	
 ]);
 
 function_loop_statement = new Abstraction("function loop statement", [
@@ -385,21 +375,22 @@ function_switch_OMG = new Abstraction("function switch OMG",[
 ]);
 
 function_switch_case = new Abstraction("function switch case", [
-	["WTF?", "LINEBREAK", switch_OMG, switch_OMGWTF]
+	["WTF?", "LINEBREAK", function_switch_OMG, function_switch_OMGWTF]
 ]);
+
 
 function_inside_statement = new Abstraction("function inside statement",[
 	[assignment],
 	[cast],
 	[cast_assign],
-	[declaration],
 	[expression],
+	[declaration],
 	[function_if_statement],
 	[input],
 	[function_loop_statement],
 	[print],
 	[function_switch_case],
-	// [function_call], TODO: add recursion feature later
+	[function_call], // TODO: add recursion feature later
 	[function_return],
 	["GTFO"],
 	["LINEBREAK"],
@@ -424,8 +415,8 @@ statement = new Abstraction("statement", [
 	[assignment],
 	[cast],
 	[cast_assign],
-	[declaration],
 	[expression],
+	[declaration],
 	[if_statement],
 	[input],
 	[loop_statement],
@@ -434,6 +425,22 @@ statement = new Abstraction("statement", [
 	[function_statement],
 	["LINEBREAK"]
 ]);
+
+function_no_dec_statement.rules =[
+	[assignment],
+	[cast],
+	[cast_assign],
+	[expression],
+	[function_if_statement],
+	[input],
+	[function_loop_statement],
+	[print],
+	[function_return],
+	[function_switch_case],
+	["GTFO"],
+	["LINEBREAK"]//baka kelangan .rules to
+];
+
 
 no_dec_statement = new Abstraction ("no dec statement", [
 	[assignment],

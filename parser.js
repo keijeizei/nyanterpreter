@@ -629,6 +629,23 @@ async function semanticAnalyzer(tokens, function_name, args) {
 
 				// if and switch commands
 				case "WTF?":
+					condition_stack.push({
+						"IT": { ...symbol_table["IT"] },
+						"cases": [],
+						"skip": false,
+						// "antiskip": false,
+						"superskip": false
+					});
+					csd++;
+					// if a child condition has a parent that skips, child will skip as well
+					if (csd !== 0 && condition_stack[csd - 1]["skip"]) {
+						condition_stack[csd]["superskip"] = true;
+						condition_stack[csd]["skip"] = true;
+					}
+					console.log("WTF/O_RLY CONDITION STACK:")
+					console.table(condition_stack)
+					break;
+
 				case "O_RLY?":
 					condition_stack.push({
 						"IT": { ...symbol_table["IT"] },
@@ -660,6 +677,15 @@ async function semanticAnalyzer(tokens, function_name, args) {
 								break;
 						}
 						// console.log("here", condition_stack[csd]["skip"], condition_stack[csd]["IT"])
+					}
+					console.table(condition_stack)
+					break;
+
+				case "MEBBE":
+					operand1 = buffer.pop();
+					// determine the skip value depending on the IT and the operand
+					if(!condition_stack[csd]["superskip"]) {
+						condition_stack[csd]["skip"] = !operand1[1];
 					}
 					console.table(condition_stack)
 					break;
@@ -705,6 +731,14 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					break;
 
 				case "GTFO":
+					// GTFO ends a function with return 0 only if outside a switch statement
+					// only switch statements have an antiskip key
+					if(function_name && (csd === -1 || condition_stack[csd] && "antiskip" in condition_stack)) {
+						function_symbol_tables[function_name] = symbol_table;
+						
+						return ["NUMBR", 0];
+					}
+
 					// this will execute on the first GTFO from a matching case
 					// enables superskip to skip the rest of the switch block
 					if(condition_stack[csd]["antiskip"]) {
@@ -729,7 +763,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					var operation = buffer.pop();
 					var variable = buffer.pop();
 					var til_wile = buffer.pop();
-					var expr = buffer.pop();			// this is already evaluated
+					var expr = buffer.pop();			// this expresson is already evaluated
 					// console.log(label, operation, variable, til_wile, expr)
 
 					// push a new loop to the stack if stack is empty or a new loopident is encountered
@@ -743,12 +777,30 @@ async function semanticAnalyzer(tokens, function_name, args) {
 						});
 						lsd++;
 
-						// if a child condition has a parent that skips, child will skip as well
+						// if a child loop has a parent that skips, child will skip as well
 						if (lsd !== 0 && loop_stack[lsd - 1]["skip"]) {
 							loop_stack[lsd]["skip"] = true;
 						}
+
+						// make loop infinite (add a times_looped counter) if there is no operation
+						if (!operation) {
+							loop_stack[lsd]["times_looped"] = 1;
+						}
 					}
 
+					/* ========== FOR INFINITE LOOP ========== */
+					// increment times_looped counter and check if it exceeds max loop iterations
+					if (loop_stack[lsd]["times_looped"]) {
+						loop_stack[lsd]["times_looped"]++;
+
+						if (loop_stack[lsd]["times_looped"] > 420) {
+							loop_stack[lsd]["skip"] = true;
+							terminal.write("Maximum loop iterations for infinite loop reached. Loop terminated.");
+						}
+						break;
+					}
+
+					/* ========== FOR NON-INFINITE LOOP ========== */
 					// test if variable[1] exists on the symbol table
 					if (!symbol_table[variable[1]]) {
 						terminal.error(`variable ${variable[1]} is not defined.`, current_token[2], false);

@@ -129,7 +129,7 @@ CodeMirror.defineMode('lolcode', function(config, parserConfig) {
             return true;
         }
         else if (stream.match(p.kw.KTHX)) {
-            state.dedent();
+            // state.dedent();
             return true;
         }
         else if (matches(stream, state, [p.kw.misc, p.kw.MEBBE, p.kw.NOWAI])) {
