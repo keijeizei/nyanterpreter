@@ -674,6 +674,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 
 				case "YA_RLY":
 				case "NO_WAI":
+				case "MEBBE":
 					// determine the skip value depending on the IT
 					if(!condition_stack[csd]["superskip"]) {
 						switch (current_token[0]) {
@@ -681,19 +682,29 @@ async function semanticAnalyzer(tokens, function_name, args) {
 								condition_stack[csd]["skip"] = condition_stack[csd]["IT"]["value"] ? false : true;
 								break;
 							case "NO_WAI":
-								condition_stack[csd]["skip"] = !condition_stack[csd]["IT"]["value"] ? false : true;
+								if (condition_stack[csd]["skip"]) {
+									condition_stack[csd]["skip"] = !condition_stack[csd]["IT"]["value"] ? false : true;
+								}
+								else {
+									// enable skip and superskip if skip is false (meaning a previous YA RLY/MEBBE block has been executed)
+									condition_stack[csd]["skip"] = true;
+									condition_stack[csd]["superskip"] = true;
+								}
+								break;
+							case "MEBBE":
+								if (condition_stack[csd]["skip"]) {
+									// mebbe uses the operand to determine the skip
+									operand1 = buffer.pop();
+									condition_stack[csd]["skip"] = !operand1[1];
+								}
+								// enable skip and superskip if skip is false (meaning a previous YA RLY/MEBBE block has been executed)
+								else {
+									condition_stack[csd]["skip"] = true;
+									condition_stack[csd]["superskip"] = true;
+								}
 								break;
 						}
 						// console.log("here", condition_stack[csd]["skip"], condition_stack[csd]["IT"])
-					}
-					console.table(condition_stack)
-					break;
-
-				case "MEBBE":
-					operand1 = buffer.pop();
-					// determine the skip value depending on the IT and the operand
-					if(!condition_stack[csd]["superskip"]) {
-						condition_stack[csd]["skip"] = !operand1[1];
 					}
 					console.table(condition_stack)
 					break;
