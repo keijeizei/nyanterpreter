@@ -7,7 +7,7 @@
 
 html {
 	line-height: 1.5;
-	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-family: "Comic Sans MS", sans-serif;
 	font-weight: normal;
 	color: var(--textcolor);
 	height: 100%;
@@ -83,7 +83,7 @@ tbody {
 	color: var(--textcolor);
 	background-color: var(--accent);
 	font-weight: bold;
-	font-family: "Comic Sans MS", cursive, sans-serif;//hehe
+	font-family: "Comic Sans MS", sans-serif; /* hehe */
 }
 
 .btn:disabled,
@@ -171,7 +171,7 @@ input[type="file"] {
 	color: var(--textcolor);
 	background-color: var(--accent);
 	font-weight: bold;
-	font-family: "Comic Sans MS", cursive, sans-serif;/*hehe*/
+	font-family: "Comic Sans MS", sans-serif; /* hehe */
 }
 
 .center{
