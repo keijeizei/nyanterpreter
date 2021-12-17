@@ -23,6 +23,17 @@ class Terminal {
 		this.updateGUI();
 	}
 
+	internalError(message) {
+		this.content += "Nyanterpreter error: ";
+		this.content += message;
+		
+		this.error_encountered = true;
+		this.updateGUI();
+		
+		// enable execute button if error
+		document.getElementById("executebutton").disabled = false;
+	}
+
 	error(message, line_number, is_syntax_error) {
 		this.content += is_syntax_error ? "Syntax error at line " : "Error at line ";
 		this.content += line_number;

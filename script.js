@@ -4,6 +4,8 @@ var code_text = "";
 // codemirror invoker
 var editor = CodeMirror.fromTextArea(document.getElementById('file-content'), {
 	theme: "monokai",
+	indentUnit: 4,
+	indentWithTabs: true,
 	lineNumbers: true
 })
 
@@ -17,6 +19,18 @@ editor.on('change', editor => {
 
 // terminal object
 var terminal = new Terminal();
+
+/* ========== JavaScript Internal Error Handlers ========== */
+window.onerror = err => {
+	terminal.internalError(err);
+    return true;
+};
+
+window.onunhandledrejection = err => {
+	terminal.internalError(err.reason);
+	return true;
+}
+
 
 function readSingleFile(e) {
 	var file = e.target.files[0];

@@ -26,7 +26,7 @@ class Abstraction {
 					return original_index;
 				}
 
-				// console.log("\t".repeat(tab_count), symbol.name ? `${symbol.name}` : `${symbol} vs ${tokens[index][0]}`)
+				 console.log("\t".repeat(tab_count), symbol.name ? `${symbol.name}` : `${symbol} vs ${tokens[index][0]}`)
 
 				if (typeof (symbol) === "object") {
 					tab_count++;
@@ -310,8 +310,15 @@ else_statement = new Abstraction("else statement", [
 	["OIC"]
 ]);
 
+mebbe = new Abstraction("else if statement", [
+	["MEBBE",expression, "LINEBREAK", no_dec_code_block, "OIC"],
+	["MEBBE",expression,"LINEBREAK", no_dec_code_block, else_statement],
+	["OIC"]
+]);
+
 if_statement = new Abstraction("if statement", [
-	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", no_dec_code_block, else_statement]
+	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", no_dec_code_block, else_statement],
+	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", no_dec_code_block, mebbe]
 ]);
 
 assignment = new Abstraction("assignment", [
@@ -352,8 +359,15 @@ function_else_statement = new Abstraction("function else statement", [
 	["OIC"]
 ]);
 
+function_mebbe = new Abstraction("function else if statement", [
+	["MEBBE",expression, "LINEBREAK", function_no_dec_code_block, "OIC"],
+	["MEBBE",expression,"LINEBREAK", function_no_dec_code_block, function_else_statement],
+	["OIC"]
+]);
+
 function_if_statement = new Abstraction("function if statement",[
 	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", function_no_dec_code_block, function_else_statement],
+	["O_RLY?", "LINEBREAK", "YA_RLY", "LINEBREAK", function_no_dec_code_block, function_mebbe]
 	
 ]);
 

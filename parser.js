@@ -100,7 +100,6 @@ async function semanticAnalyzer(tokens, function_name, args) {
 	var operands = [];			// for infinite operations
 	var answer = null;
 
-
 	// if(function_name) {			// add the argments if function call
 		var symbol_table = {
 			"IT": {

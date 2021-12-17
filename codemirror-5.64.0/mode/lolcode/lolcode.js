@@ -42,7 +42,7 @@ CodeMirror.defineMode('lolcode', function(config, parserConfig) {
                 '(IT[ZS](\\s+GOT)?)|(I\\s+HAS\\s+A)|' +
                 'A|AN|MKAY|R|YR|(FOUND\\s+YR)|(O\\s+NVM)|GTFO|WILE|' +
                 'MAEK|(IS\\s+NOW\\s+A)|' +
-                'G[IE]MMEH|VISIBLE|' +
+                'G[IE]MMEH|VISIBLE|I\\s+IZ|SMOOSH|' +
                 '(PLZ\\s+HALP)' +
                 ')\\b'
             ),

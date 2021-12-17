@@ -7,12 +7,13 @@ function execute() {
 	gui_tokens = [];
 	symbol_table = {};
 	function_symbol_tables = {};
-
+	
 	expected = "";
 	instead_saw = "";
 	error_index = 0;
 	last_index = 0;
 	tab_count = 0;
+	f_id = 0;
 	first_symbol = true;
 
 	terminal.clear();
