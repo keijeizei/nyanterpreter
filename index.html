@@ -60,7 +60,10 @@
 		</div>
 		<div class="item4">
 			<button id="executebutton" class="black btn" onclick="execute()">EXECUTE</button>
-			<h5>TERMINAL</h5>
+			<div class="terminalbar">
+				<h5>TERMINAL</h5>
+				<button class="showaboutbutton" onclick="togglePopup()">i</button>
+			</div>
 		</div>
 		<div class="item5">
 			<textarea id="terminalDiv" onclick="focusDummyInput()" readonly></textarea>
@@ -69,6 +72,18 @@
 				type="text"
 				type="hidden"></input>
 		</div>
+	</div>
+	<div id="popup">
+		<div class="about">
+			<h1>Nyanterpreter</h4>
+			<p>A LOLCODE interpreter built using JavaScript.</p>
+			</br>
+			<h4>Developers</h4>
+			<p>Ludovico, Raul Gabriel G.</p>
+			<p>Mercado, Karl O.</p>
+			<p>Tan, King James Zoren C.</p>
+		</div>
+		<button class="hideaboutbutton" onclick="togglePopup()">X</button>
 	</div>
 	<script src="lexemes.js"></script>
 	<script src="grammar.js"></script>

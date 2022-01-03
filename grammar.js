@@ -38,6 +38,11 @@ class Abstraction {
 					}
 					else {
 						valid = false;
+						if (strict && !expected) {
+							temp_expected = symbol.name;
+							temp_instead_saw = `${tokens[index][0]} ${tokens[index][1] ? tokens[index][1] : ""}`;
+							temp_error_line_number = tokens[index][2];
+						}
 						break;
 					}
 				}
@@ -55,7 +60,6 @@ class Abstraction {
 						index++;
 					}
 					else {
-						// console.log("valid is FALSE")
 						valid = false;
 						if (strict && !expected) {
 							temp_expected = symbol;
@@ -84,7 +88,7 @@ class Abstraction {
 			expected = temp_expected;
 			instead_saw = temp_instead_saw;
 			error_line_number = temp_error_line_number;
-			console.log("SYNTAX ERROR HAPPENED HERE");
+			console.log("SYNTAX ERROR HAPPENED HERE", this.name);
 		}
 		return original_index;
 	}

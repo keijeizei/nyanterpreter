@@ -313,25 +313,26 @@ async function semanticAnalyzer(tokens, function_name, args) {
 
 				case "GIMMEH": 
 					operand1 = buffer.pop();
+
+					if (!symbol_table[operand1[1]]) {
+						terminal.error(`variable ${operand1[1]} is not defined.`, current_token[2], false);
+						return;
+					}
+
 					var input = await getUserInput();
 					console.log(input)
 					
-					if (!symbol_table[operand1[1]]) {
-						terminal.error(`variable ${operand1[1]} is not defined.`, current_token[2], false);
+					if (input.match(/^-?[0-9]+$/g)) {
+						symbol_table[operand1[1]]["type"] = "NUMBR";
+						symbol_table[operand1[1]]["value"] = Number(input);
+					}
+					else if (input.match(/^-?[0-9]*\.?[0-9]+$/g)) {
+						symbol_table[operand1[1]]["type"] = "NUMBAR";
+						symbol_table[operand1[1]]["value"] = Number(input);
 					}
 					else {
-						if (input.match(/^-?[0-9]+$/g)) {
-							symbol_table[operand1[1]]["type"] = "NUMBR";
-							symbol_table[operand1[1]]["value"] = Number(input);
-						}
-						else if (input.match(/^-?[0-9]*\.?[0-9]+$/g)) {
-							symbol_table[operand1[1]]["type"] = "NUMBAR";
-							symbol_table[operand1[1]]["value"] = Number(input);
-						}
-						else {
-							symbol_table[operand1[1]]["type"] = "YARN";
-							symbol_table[operand1[1]]["value"] = input;
-						}
+						symbol_table[operand1[1]]["type"] = "YARN";
+						symbol_table[operand1[1]]["value"] = input;
 					}
 					break;
 

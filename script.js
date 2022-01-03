@@ -45,6 +45,16 @@ function readSingleFile(e) {
 }
   
 
+function togglePopup() {
+	if (document.getElementById("popup").style.display === "block") {
+		document.getElementById("popup").style.display = "none";
+	}
+	else {
+		document.getElementById("popup").style.display = "block";
+	}
+}
+
+
 function addTable() {
 	var myTableDiv = document.getElementById("lexemeDiv");
 
