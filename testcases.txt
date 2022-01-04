@@ -437,3 +437,67 @@ HAI
     VISIBLE var3!
     VISIBLE var4!
 KTHXBYE
+
+
+
+========ERROR HANDLING===============
+
+
+//Expected HAI, instead saw EOF
+
+=====================================
+
+BTW A COMMENT
+
+// Unknown Lexeme: A COMMENT
+
+=====================================
+HAI
+
+VISIBLE
+
+KTHXBYE
+
+//Expected print content, instead saw LINEBREAK
+
+=====================================
+
+HAI 
+
+I HAS A var1 ITZ "yes"
+I HAS A var2 ITZ 2
+I HAS A var3
+
+var3 R SUM OF var1 AN var2
+
+KTHXBYE
+
+//cannot be typecasted to NUMBR or NUMBAR
+
+=====================================
+
+
+HAI 
+	I HAS A var ITZ
+KTHXBYE
+
+//expected VARIDENT, instead saw a linebreak
+==============================================
+
+HAI 
+
+visible var1
+
+KTHXBYE
+//unexpected token , VARIDENt visible
+
+============================================
+HAI 
+
+visible R 1
+
+KTHXBYE
+
+//visible is not defined
+
+

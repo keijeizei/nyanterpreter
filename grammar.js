@@ -345,9 +345,13 @@ print = new Abstraction("print", [
 	["VISIBLE", print_content],
 ]);
 
+initialization = new Abstraction("initialization", [
+	["ITZ", expression],
+	["ITZ", "VARIDENT"]
+]);
+
 declaration = new Abstraction("declaration", [
-	["I_HAS_A", "VARIDENT", "ITZ", expression],
-	["I_HAS_A", "VARIDENT", "ITZ", "VARIDENT"],
+	["I_HAS_A", "VARIDENT", initialization],
 	["I_HAS_A", "VARIDENT"],
 ]);
 

@@ -21,12 +21,12 @@ function execute() {
 	lexer.start();
 	removeTable();
 	if (!terminal.error_encountered) {
-		syntaxAnalyzer(interpreter_tokens, null, {});
+		syntaxAnalyzer(interpreter_tokens);
 		if (!terminal.error_encountered) {
 			semanticAnalyzer(interpreter_tokens);
 		}
 	}
-	
+
 	// enable execute button if error is encountered
 	if(terminal.error_encountered) {
 		document.getElementById("executebutton").disabled = false;
