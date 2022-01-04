@@ -108,7 +108,6 @@ async function semanticAnalyzer(tokens, function_name, args) {
 			},
 			...args
 		}
-		console.table(symbol_table)
 	// }
 	// else {
 		// symbol_table["IT"] = {		// initialize an IT variable
@@ -176,7 +175,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 
 		while (stack.length) {
 			current_token = stack.pop();
-			console.log(current_token);
+			// console.log(current_token);
 			return_to_IT = false;
 
 			operands = [];
@@ -320,7 +319,6 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					}
 
 					var input = await getUserInput();
-					console.log(input)
 					
 					if (input.match(/^-?[0-9]+$/g)) {
 						symbol_table[operand1[1]]["type"] = "NUMBR";
@@ -521,7 +519,6 @@ async function semanticAnalyzer(tokens, function_name, args) {
 							];
 						}
 					}
-					console.log(operands)
 					// perform the specific operation
 					switch (current_token[0]) {
 						case "ANY_OF":
@@ -546,7 +543,6 @@ async function semanticAnalyzer(tokens, function_name, args) {
 				case "MAEK":
 					operand1 = buffer.pop();	// variable to be typecasted
 					operand2 = buffer.pop();	// target type
-					console.log(operand1, operand2);
 
 					// fetch variable value from symbol table
 					if (operand1[0] === "VARIDENT") {
@@ -650,8 +646,8 @@ async function semanticAnalyzer(tokens, function_name, args) {
 						condition_stack[csd]["superskip"] = true;
 						condition_stack[csd]["skip"] = true;
 					}
-					console.log("WTF/O_RLY CONDITION STACK:")
-					console.table(condition_stack)
+					// console.log("WTF CONDITION STACK:")
+					// console.table(condition_stack)
 					break;
 
 				case "O_RLY?":
@@ -668,8 +664,8 @@ async function semanticAnalyzer(tokens, function_name, args) {
 						condition_stack[csd]["superskip"] = true;
 						condition_stack[csd]["skip"] = true;
 					}
-					console.log("WTF/O_RLY CONDITION STACK:")
-					console.table(condition_stack)
+					// console.log("O_RLY CONDITION STACK:")
+					// console.table(condition_stack)
 					break;
 
 				case "YA_RLY":
@@ -704,18 +700,13 @@ async function semanticAnalyzer(tokens, function_name, args) {
 								}
 								break;
 						}
-						// console.log("here", condition_stack[csd]["skip"], condition_stack[csd]["IT"])
 					}
 					console.table(condition_stack)
 					break;
 
 				case "OMG":
-					// console.log("inside omg", skip)
-					console.log(condition_stack, csd)
-
 					operand1 = buffer.pop();
 
-					// console.log(cases_stack)
 					if (condition_stack[csd]["cases"].includes(operand1[1])) {
 						terminal.error(`OMG literal must be unique at ${operand1[1]}`, current_token[2], false);
 						return;
@@ -734,7 +725,7 @@ async function semanticAnalyzer(tokens, function_name, args) {
 						condition_stack[csd]["skip"] = true;
 					}
 
-					console.log("omg", condition_stack[csd]["skip"])
+					// console.log("omg", condition_stack[csd]["skip"])
 					break;
 
 				case "OMGWTF":
@@ -772,15 +763,13 @@ async function semanticAnalyzer(tokens, function_name, args) {
 				case "OIC":
 					condition_stack.pop();
 					csd--;
-					console.log("OIC CONDITION STACK:")
-					console.table(condition_stack)
+					// console.log("OIC CONDITION STACK:")
+					// console.table(condition_stack)
 					break;
 
 				// loop commands
 				case "IM_IN_YR":
-					console.log("here")
 					var label = buffer.pop();
-					console.log(label)
 					var operation = buffer.pop();
 					var variable = buffer.pop();
 					var til_wile = buffer.pop();
@@ -837,15 +826,11 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					// expr is true on TIL, go out of the loop
 					if (expr[1] && til_wile[0] === "TIL") {
 						loop_stack[lsd]["skip"] = true;
-
-						console.log("til ending...")
 						break;
 					}
 					// expr is false on WILE, go out of the loop
 					if (!expr[1] && til_wile[0] === "WILE") {
 						loop_stack[lsd]["skip"] = true;
-
-						console.log("wile ending...")
 						break;
 					}
 
@@ -858,8 +843,8 @@ async function semanticAnalyzer(tokens, function_name, args) {
 							break;
 					}
 
-					console.log("IM_IN_YR LOOP STACK:")
-					console.table(loop_stack)
+					// console.log("IM_IN_YR LOOP STACK:")
+					// console.table(loop_stack)
 					break;
 
 				case "IM_OUTTA_YR":
@@ -877,8 +862,8 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					else {
 						loop_stack.pop();
 						lsd--;
-						console.log("IM_OUTTA_YR LOOP STACK:")
-						console.table(loop_stack)
+						// console.log("IM_OUTTA_YR LOOP STACK:")
+						// console.table(loop_stack)
 						break;
 					}
 					break;
@@ -916,8 +901,8 @@ async function semanticAnalyzer(tokens, function_name, args) {
 					function_table[function_identifier]["end_index"] = index - 1;
 					
 					function_identifier = null;
-					console.log("FUNCTIONS:")
-					console.table(function_table)
+					// console.log("FUNCTIONS:")
+					// console.table(function_table)
 					break;
 				
 				case "I_IZ":
@@ -944,8 +929,8 @@ async function semanticAnalyzer(tokens, function_name, args) {
 							"value": operands[i][1]
 						});
 					}
-// console.log("calling", function_to_be_called)
-// console.log(function_table[function_to_be_called]["args_list"])
+					// console.log("calling", function_to_be_called)
+					// console.log(function_table[function_to_be_called]["args_list"])
 					if (args_values.length !== function_table[function_to_be_called]["args_list"].length) {
 						terminal.error(`function ${function_to_be_called} expects ${function_table[function_to_be_called][args_list].length} arguments, instead saw ${args_values.length}`, current_token[2], false);
 						return;
@@ -1011,9 +996,9 @@ async function semanticAnalyzer(tokens, function_name, args) {
 			symbol_table["IT"]["value"] = current_token[1];
 		}
 	}
-	console.log("SYMBOL TABLE of ", function_name ? function_name : "main");
-	console.table(symbol_table);
-	//console.table(symbol_table['IT'].value);
+	// console.log("SYMBOL TABLE of ", function_name ? function_name : "main");
+	// console.table(symbol_table);
+	// console.table(symbol_table['IT'].value);
 
 	// in the absence of any explicit break, when the end of the code block is reached, the value in IT is returned.
 	if(function_name) {
@@ -1025,6 +1010,6 @@ async function semanticAnalyzer(tokens, function_name, args) {
 		main_symbol_table = symbol_table;
 		addTable();
 		document.getElementById("executebutton").disabled = false;
-		console.log(function_symbol_tables)
+		// console.log(function_symbol_tables)
 	}
 }

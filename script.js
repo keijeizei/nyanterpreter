@@ -106,7 +106,7 @@ function addTable() {
 	symbolTable.appendChild(symbolTableBody);
 
 	for (var key in main_symbol_table) {
-		console.log(key)
+		// console.log(key)
 		var symbolTabletr = document.createElement('TR');
 		symbolTabletr.id="symbolTabletrID"
 		symbolTableBody.appendChild(symbolTabletr);
@@ -155,7 +155,7 @@ function addTable() {
 	functionsymbolTable.appendChild(functionsymbolTableBody);
 
 	for (var key in function_symbol_tables) {
-		console.log(key)
+		// console.log(key)
 		var functionsymbolTabletr = document.createElement('TR');
 		var functionsymbolTableth = document.createElement('TH');
 		functionsymbolTabletr.id="functionsymbolTabletrID"
@@ -166,7 +166,7 @@ function addTable() {
 		functionsymbolTabletr.appendChild(	functionsymbolTableth)
 
 		for (var key_of_keys in function_symbol_tables[key]){
-			console.log(key_of_keys)
+			// console.log(key_of_keys)
 			var functionsymbolTabletr2 = document.createElement('TR');
 			functionsymbolTableBody.appendChild(functionsymbolTabletr2);
 			functionsymbolTabletr2.id="functionsymbolTabletr2ID"
@@ -174,8 +174,8 @@ function addTable() {
 			functionsymbolTabletd.width= '33%'
 			functionsymbolTabletd.appendChild(document.createTextNode(key_of_keys));
 			functionsymbolTabletr2.appendChild(functionsymbolTabletd);
-			console.log(function_symbol_tables[key][key_of_keys].value)
-			console.log(function_symbol_tables[key][key_of_keys].type)
+			// console.log(function_symbol_tables[key][key_of_keys].value)
+			// console.log(function_symbol_tables[key][key_of_keys].type)
 			var functionsymbolTabletd2 = document.createElement('TD');
 			functionsymbolTabletd2.width= '33%'
 			functionsymbolTabletr2.appendChild(functionsymbolTabletd2)

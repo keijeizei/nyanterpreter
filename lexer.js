@@ -162,6 +162,7 @@ class LexicalAnalyzer {
 		for (var i = 0; i < this.tokens.length; i++) {
 			if(this.tokens[i][0] === "..." && this.tokens[i + 1][0] === "LINEBREAK") {
 				this.tokens.splice(i, 2);
+				console.table(this.tokens)
 			}
 		}
 	}
@@ -219,11 +220,11 @@ class LexicalAnalyzer {
 						}
 					}
 					// buffer contains a ... , push ... token
-					else if (this.buffer.slice(-4, -1) === "...") {
-						valid_lexeme = this.tokenize(this.buffer.slice(4, -1));	// remove the ...
+					else if (this.buffer.slice(-3) === "...") {
+						valid_lexeme = this.tokenize(this.buffer.slice(0, -3));	// remove the ...
 
 						this.tokens.push(["...", null, this.line_number]);		// push ... lexeme
-						this.tokens.push(["LINEBREAK", null, this.line_number]);
+						// this.tokens.push(["LINEBREAK", null, this.line_number]);
 					}
 					// buffer contains a comma, push a soft LINEBREAK
 					else if (this.buffer[this.buffer.length - 1] === ",") {
@@ -267,6 +268,9 @@ class LexicalAnalyzer {
 								this.skip();
 							}
 							// continue;
+						}
+						else {
+							this.eat();
 						}
 					}
 					// starting " detected
@@ -326,7 +330,6 @@ class LexicalAnalyzer {
 			else if (is_string || is_comment || is_multiline_comment) {
 				this.eat();
 			}
-			// TODO ADD THE ... push here
 			// buffer contains a comma, push a soft LINEBREAK
 			else if (this.buffer[this.buffer.length - 1] === ",") {
 				valid_lexeme = this.tokenize(this.buffer.slice(0, -1));	// remove the comma
@@ -356,7 +359,6 @@ class LexicalAnalyzer {
 
 			// end if an invalid lexeme is detected
 			if (!valid_lexeme) {
-				console.log("here")
 				return;
 			}
 		}
@@ -373,7 +375,7 @@ class LexicalAnalyzer {
 			return;
 		}
 
-		console.table(this.tokens)
+		// console.table(this.tokens)
 		this.merge();
 		this.replaceSpecialCharacters();
 		this.convertIdent();
@@ -385,7 +387,7 @@ class LexicalAnalyzer {
 
 		interpreter_tokens = this.tokens;
 
-		console.log("FINAL INTERPRETER TOKENS:");
-		console.table(interpreter_tokens);
+		// console.log("FINAL INTERPRETER TOKENS:");
+		// console.table(interpreter_tokens);
 	}
 }

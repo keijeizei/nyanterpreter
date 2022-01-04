@@ -26,7 +26,7 @@ class Abstraction {
 					return original_index;
 				}
 
-				 console.log("\t".repeat(tab_count), symbol.name ? `${symbol.name}` : `${symbol} vs ${tokens[index][0]}`)
+				//  console.log("\t".repeat(tab_count), symbol.name ? `${symbol.name}` : `${symbol} vs ${tokens[index][0]}`)
 
 				if (typeof (symbol) === "object") {
 					tab_count++;
@@ -78,7 +78,6 @@ class Abstraction {
 			// reset index and try the next rule
 			index = original_index;
 		}
-		// console.log("about to return a ", valid)
 		if (valid) {
 			// console.log(`rule ${this.name} successful`)
 			return index;
@@ -88,7 +87,7 @@ class Abstraction {
 			expected = temp_expected;
 			instead_saw = temp_instead_saw;
 			error_line_number = temp_error_line_number;
-			console.log("SYNTAX ERROR HAPPENED HERE", this.name);
+			// console.log("SYNTAX ERROR HAPPENED HERE", this.name);
 		}
 		return original_index;
 	}
@@ -410,7 +409,7 @@ function_inside_statement = new Abstraction("function inside statement",[
 	[function_loop_statement],
 	[print],
 	[function_switch_case],
-	[function_call], // TODO: add recursion feature later
+	[function_call],
 	[function_return],
 	["GTFO"],
 	["LINEBREAK"],
@@ -458,7 +457,7 @@ function_no_dec_statement.rules =[
 	[function_return],
 	[function_switch_case],
 	["GTFO"],
-	["LINEBREAK"]//baka kelangan .rules to
+	["LINEBREAK"]
 ];
 
 
@@ -488,5 +487,6 @@ code_block.rules = [
 program = new Abstraction("program", [
 	["HAI", "NUMBAR", "LINEBREAK", code_block, "KTHXBYE"],
 	["HAI", "LINEBREAK", code_block, "KTHXBYE"],
+	["HAI", "NUMBAR", "LINEBREAK", "KTHXBYE"],
 	["HAI", "LINEBREAK", "KTHXBYE"]
 ]);

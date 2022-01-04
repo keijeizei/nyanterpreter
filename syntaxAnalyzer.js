@@ -6,11 +6,6 @@ var error_index = 0;
 var last_index = 0;
 var tab_count = 0;		// used only for debugging
 
-// first_symbol refers to the command in the line
-// this is important to know if we are on the right rule
-// first_symbol becomes false after the commands match
-var first_symbol = true
-
 function syntaxAnalyzer(tokens) {
 	var index = program.check(tokens, 0);
 
@@ -29,7 +24,7 @@ function syntaxAnalyzer(tokens) {
 	}
 	// index should be equal to tokens.length if there are no syntax errors
 	else {
-		console.log("No syntax errors.");
+		// console.log("No syntax errors.");
 		return true;
 	}
 }

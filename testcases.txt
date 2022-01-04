@@ -1,35 +1,439 @@
-===========ARITHMETIC=====================
+==========INPUT/OUTPUT==================
+HAI 1.2
+	I HAS A num1
+	I HAS A num2
 
-===========BOOLEAN========================
+	num1 R 15
 
-==========COMPARISON=====================
+	VISIBLE "Enter value for num2: "
 
-==========CASTING========================
+	GIMMEH num2		BTW getting input from user
 
-==========I/O=============================
+	VISIBLE num1 " is num1"
+	VISIBLE num2 " is num2"
 
-===========ASSIGNMENT========================
+KTHXBYE
 
-============AGE TO YEARS OR MONTHS===========
 
-============FIND MAX NUM====================
+==========VARIABLES=================
+HAI 1.2
+	I HAS A uninitialized
+
+	I HAS A NUM ITZ 2		BTW NUM = 2
+	I HAS A FLOT ITZ 2.5	BTW FLOT = 2.5
+	I HAS A NAME ITZ "erika"	BTW NAME = "erika"
+
+	I HAS A answer ITZ SUM OF 1 AN 2
+
+	BTW printing values
+	VISIBLE NUM
+	VISIBLE FLOT
+	VISIBLE NAME
+	VISIBLE answer
+
+	BTW assignment statement:
+	NUM R 17
+	
+	VISIBLE "NUM is now " NUM
+
+KTHXBYE
+
+=============IF-ELSE=======================
+HAI
+	I HAS A num1 ITZ 10
+	I HAS A num2 ITZ 5
+	BOTH SAEM num1 AN num2
+	O RLY?
+		YA RLY
+			VISIBLE "Yay equal!"
+		NO WAI
+			VISIBLE "Aww not equal."
+	OIC
+	
+KTHXBYE
 
 ==============IF-ELSE NESTING===============
+HAI
+	I HAS A a ITZ 11
+	I HAS A b ITZ 9
+	I HAS A c ITZ 10
+	I HAS A max
+
+	BTW if a > b
+	DIFFRINT a AN SMALLR OF a AN b
+	O RLY?
+		YA RLY
+			BTW if a > c
+			DIFFRINT a AN SMALLR OF a AN c
+			O RLY?
+				YA RLY
+					max R a
+				NO WAI
+					max R c
+			OIC
+		NO WAI
+			BTW if b > c
+			DIFFRINT b AN SMALLR OF b AN c
+			O RLY?
+				YA RLY
+					max R b
+				NO WAI
+					max R c
+			OIC
+	OIC
+    VISIBLE max
+KTHXBYE
 
 ==============ELSE-IF=======================
+HAI
+I HAS A NAME ITZ "Zoren"
+I HAS A ANIMAL ITZ "Cat"
+BOTH SAEM NAME AN "Tres"
+O RLY?
+	YA RLY
+		VISIBLE "Your name is " NAME
+	MEBBE BOTH SAEM ANIMAL AN "Dog"
+		VISIBLE "Woof"
+	NO WAI
+		VISIBLE "What u?"
+OIC
+KTHXBYE
+
+
+===========ARITHMETIC=====================
+HAI 1.2
+	I HAS A x
+	I HAS A y
+	I HAS A answer
+
+	VISIBLE "x: "
+	GIMMEH x
+
+	VISIBLE "y: "
+	GIMMEH y
+
+	answer R SUM OF x AN y
+	VISIBLE x "+" y " is " answer
+
+	answer R DIFF OF x AN y
+	VISIBLE x "-" y " is " answer
+
+	answer R PRODUKT OF x AN y
+	VISIBLE x "*" y " is " answer
+
+	answer R QUOSHUNT OF x AN y
+	VISIBLE x "/" y " is " answer
+
+	answer R MOD OF x AN y
+	VISIBLE x "%" y " is " answer
+
+	answer R BIGGR OF x AN y
+	VISIBLE "max(" x "," y ") is " answer
+
+	answer R SMALLR OF x AN y
+	VISIBLE "min(" x "," y ") is " answer
+
+
+KTHXBYE
+
+==========COMPARISON=====================
+HAI 1.2
+  I HAS A x
+  I HAS A y
+
+  VISIBLE "Gimmeh x "
+  GIMMEH x
+  VISIBLE "Gimmeh y "
+  GIMMEH y
+  
+  BOTH SAEM x AN y
+OBTW
+  output will be given to the implicit IT variable
+  since it was not given to any variable
+TLDR
+
+  VISIBLE x "==" y " is " IT  BTW uses the implicit variable
+  VISIBLE x "!=" y " is " DIFFRINT x AN y
+
+KTHXBYE
+
+===========BOOLEAN========================
+HAI 1.2
+  I HAS A flag ITZ WIN
+  I HAS A anotherflag ITZ FAIL
+
+  VISIBLE flag " and " anotherflag " is " BOTH OF flag AN anotherflag
+  VISIBLE flag " or " anotherflag " is " EITHER OF flag AN anotherflag
+  VISIBLE flag " xor " anotherflag " is " WON OF flag AN anotherflag
+  VISIBLE "not " flag " is " NOT flag
+  
+  I HAS A flag3 ITZ WIN
+  I HAS A flag4 ITZ WIN
+  
+  I HAS A flag5
+  flag5 R ALL OF flag AN anotherflag AN flag3 AN flag4 MKAY BTW assignment statement
+  VISIBLE flag5
+
+KTHXBYE
+
+=========INFINITE ARITY OPERATIONS==========
+HAI
+I HAS A string1 ITZ "hehe"
+I HAS A string2 ITZ "hoho"
+I HAS A num ITZ 1100
+
+VISIBLE SMOOSH string1 AN string2 AN num
+VISIBLE ALL OF WIN AN WIN AN WIN AN FAIL AN WIN MKAY
+VISIBLE ANY OF WIN AN BOTH OF WIN AN NOT FAIL AN WIN AN WON OF WIN AN NOT WIN MKAY
+KTHXBYE
+==========CASTING========================
+HAI
+	I HAS A yarntonumbr
+    I HAS A yarntonumbar
+    I HAS A yarntotroof1
+    I HAS A yarntotroof2
+    
+    I HAS A numbrtonumbar
+    I HAS A numbrtoyarn
+    I HAS A numbrtotroof1
+    I HAS A numbrtotroof2 
+    
+    I HAS A numbartonumbr
+    I HAS A numbartotroof1
+    I HAS A numbartotroof2
+    I HAS A numbartoyarn
+    
+    I HAS A trooftonumbr1
+    I HAS A trooftonumbr2
+    I HAS A trooftonumbar1
+    I HAS A trooftonumbar2
+    I HAS A trooftoyarn1
+    I HAS A trooftoyarn2
+    
+    I HAS A noobtonumbr
+    I HAS A noobtonumbar
+    I HAS A noobtotroof
+    I HAS A noobtoyarn
+    
+    numbrtonumbar R MAEK 2 A NUMBAR
+    numbrtoyarn R MAEK 1 A YARN
+    numbrtotroof1 R MAEK 1 A TROOF
+    numbrtotroof2 R MAEK 0 A TROOF
+
+    numbartonumbr R MAEK 1.1 A NUMBR
+    numbartotroof1 R MAEK 1.0 A TROOF
+    numbartotroof2 R MAEK 0.0 A TROOF
+    numbartoyarn R MAEK 69.69 A YARN
+
+    trooftonumbr1 R MAEK WIN A NUMBR
+    trooftonumbr2 R MAEK FAIL A NUMBR
+    trooftonumbar1 R MAEK WIN A NUMBAR
+    trooftonumbar2 R MAEK FAIL A NUMBAR
+    trooftoyarn1 R MAEK WIN A YARN
+    trooftoyarn2 R MAEK FAIL A YARN
+	
+	yarntonumbr R MAEK "1" A NUMBR
+	yarntonumbar R MAEK "1.234" A NUMBAR
+	yarntotroof1 R MAEK "non-empty string" A TROOF
+	yarntotroof2 R MAEK "" A TROOF
+
+    noobtonumbr R MAEK NOOB A NUMBR
+    noobtonumbar R MAEK NOOB A NUMBAR
+    noobtotroof R MAEK NOOB A TROOF
+    noobtoyarn R MAEK NOOB A YARN
+KTHXBYE
+
+===========SWITCH-CASE=====================
+HAI
+	I HAS A standing
+	VISIBLE "Enter a number:: "
+	GIMMEH standing
+	I HAS A remark
+
+	standing
+	WTF?
+		OMG 1
+			remark R "freshie"
+			GTFO
+		OMG 2
+			remark R "sophie"
+			GTFO
+		OMG 3
+			remark R "jr"
+			GTFO
+		OMG 4
+			remark R "senor"
+			GTFO
+		OMG 5
+		OMG 6
+			remark R "tanders"
+			GTFO
+		OMGWTF
+			remark R "hu r u?"
+	OIC
+VISIBLE remark
+KTHXBYE
+
+
+================LOOPS======================
+HAI
+I HAS A i ITZ 1
+I HAS A num1 ITZ 0
+I HAS A num2 ITZ 1
+I HAS A count ITZ 10
+I HAS A sumOfPrevTwo 
+
+IM IN YR loop UPPIN YR i WILE BOTH SAEM i AN SMALLR OF i AN count
+    VISIBLE num1
+
+	sumOfPrevTwo R SUM OF num1 AN num2
+	num1 R num2
+	num2 R sumOfPrevTwo
+IM OUTTA YR loop
+KTHXBYE
+
+============AGE TO YEARS OR MONTHS===========
+OBTW
+This is a sample program in lolcode that computes for the age in years or months.
+TLDR
+
+HAI 1.2
+  I HAS A choice
+
+  VISIBLE "1. Age in years"
+  VISIBLE "2. Age in months"
+  VISIBLE "3. Exit"
+  VISIBLE "What do you want to do? "
+  GIMMEH choice
+  
+  I HAS A year
+
+  IT R choice   BTW IT = choice
+  WTF?          BTW WTF? uses IT variable
+  OMG 1
+    VISIBLE "enter year"
+    GIMMEH year
+
+    BTW 2021-year
+    VISIBLE DIFF OF 2022 AN year " years old"
+    GTFO
+  OMG 2
+    VISIBLE "enter year"
+    GIMMEH year
+    
+    BTW (2020-year)*12
+    VISIBLE PRODUKT OF DIFF OF 2022 AN year AN 12 " months old"
+    GTFO
+  OMGWTF
+    VISIBLE "choice is not 1 or 2"
+  OIC
+
+  BTW choice!=1 && choice!=2 && choice!=3
+  ALL OF DIFFRINT choice AN 1 AN DIFFRINT choice AN 2 AN DIFFRINT choice AN 3 MKAY
+
+  O RLY?
+    YA RLY
+      VISIBLE "invalid input!" BTW if choice is not 1,2,3 then invalid input
+    NO WAI
+      VISIBLE "goodbye!"
+  OIC
+
+KTHXBYE
 
 ==============LOOP-NESTING==================
+HAI
+
+I HAS A i ITZ 1
+I HAS A j ITZ 1
+I HAS A output ITZ ""
+
+IM IN YR outer UPPIN YR i WILE DIFFRINT i AN 3
+	IM IN YR inner UPPIN YR j WILE DIFFRINT j AN 3
+		output R SMOOSH output AN i AN j AN "-"
+	IM OUTTA YR inner
+	j R 1
+IM OUTTA YR outer
+
+VISIBLE output
+
+KTHXBYE
 
 ==============LINE CONTINUATION=============
 
+HAI 
+	I HAS A var1 ITZ ...
+	2
+    VISIBLE ...
+	var1
+
+    BTW Example of Line continuation in a nested loop
+    I HAS A i ITZ 1
+    I HAS A j ITZ 1
+    I HAS A output ITZ ""
+
+    IM IN YR outer UPPIN YR i ...
+	WILE DIFFRINT i AN 3
+        IM IN YR inner ...
+		UPPIN YR j WILE DIFFRINT j AN 3
+            output R SMOOSH output AN i AN j AN "-"
+        IM OUTTA YR inner
+        j R ... 
+		1
+    IM OUTTA YR outer
+	VISIBLE output
+KTHXBYE
+
 ==============SPECIAL STRINGS===============
+HAI
+	VISIBLE "line one:)line two:)line three"
+	VISIBLE "separated:>by:>tabs"
+	VISIBLE ":"literally inside double quotes:""
+	VISIBLE "single: colon: are: escaped"
+	VISIBLE "double:: colons:: to:: write:: a:: colon"
+KTHXBYE
 
 ==============SOFT LINEBREAK================
 
+HAI
+	I HAS A var ITZ "hello soft linebreak", VISIBLE var
+KTHXBYE
+
 ==============FUNCTIONS=====================
+HAI
+	I HAS A a
+	I HAS A b
+	VISIBLE "Enter a:: "
+	GIMMEH a
+	VISIBLE "Enter b:: "
+	GIMMEH b
+	HOW IZ I func YR x AN YR y
+  		BOTH SAEM x AN y
+		O RLY?
+			YA RLY
+				FOUND YR SUM OF x AN y
+			NO WAI
+				FOUND YR PRODUKT OF x AN y
+		OIC
+	IF U SAY SO
 
-=========SWITCH-CASE IF-ELSE NESTING========
-
-=========INFINITE ARITY OPERATIONS==========
+	VISIBLE I IZ func YR a AN YR b MKAY
+KTHXBYE
 
 ========SUPPRESS NEWLINE====================
+
+HAI 
+    I HAS A var1 ITZ 2
+    I HAS A var2 ITZ 0
+    I HAS A var3 ITZ 2
+    I HAS A var4 ITZ 2
+    
+    VISIBLE var1
+    VISIBLE var2
+    VISIBLE var3
+    VISIBLE var4
+
+    VISIBLE var1!
+    VISIBLE var2!
+    VISIBLE var3!
+    VISIBLE var4!
+KTHXBYE
