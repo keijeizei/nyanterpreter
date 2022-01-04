@@ -362,8 +362,10 @@ class LexicalAnalyzer {
 				return;
 			}
 		}
-		// tokenize the last buffer content (KTHXBYE)
-		this.tokenize(this.buffer);
+		if (!is_comment) {
+			// tokenize the last buffer content (KTHXBYE)
+			this.tokenize(this.buffer);
+		}
 
 		// ERROR CHECKING
 		if (is_string) {

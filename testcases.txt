@@ -315,14 +315,14 @@ HAI 1.2
     GIMMEH year
 
     BTW 2021-year
-    VISIBLE DIFF OF 2022 AN year " years old"
+    VISIBLE DIFF OF 2020 AN year " years old"
     GTFO
   OMG 2
     VISIBLE "enter year"
     GIMMEH year
     
     BTW (2020-year)*12
-    VISIBLE PRODUKT OF DIFF OF 2022 AN year AN 12 " months old"
+    VISIBLE PRODUKT OF DIFF OF 2020 AN year AN 12 " months old"
     GTFO
   OMGWTF
     VISIBLE "choice is not 1 or 2"
@@ -447,35 +447,34 @@ KTHXBYE
 
 =====================================
 
-BTW A COMMENT
-
-// Unknown Lexeme: A COMMENT
-
-=====================================
 HAI
 
-VISIBLE
+//expected codeblock, instead saw EOF
+=====================================
 
+BTW A COMMENT
+
+// Expected HAI, instead saw EOF
+=====================================
+HAI
+	VISIBLE
 KTHXBYE
 
 //Expected print content, instead saw LINEBREAK
 
 =====================================
 
-HAI 
+HAI
+	I HAS A var1 ITZ "yes"
+	I HAS A var2 ITZ 2
+	I HAS A var3
 
-I HAS A var1 ITZ "yes"
-I HAS A var2 ITZ 2
-I HAS A var3
-
-var3 R SUM OF var1 AN var2
-
+	var3 R SUM OF var1 AN var2
 KTHXBYE
 
 //cannot be typecasted to NUMBR or NUMBAR
 
 =====================================
-
 
 HAI 
 	I HAS A var ITZ
@@ -485,19 +484,10 @@ KTHXBYE
 ==============================================
 
 HAI 
-
-visible var1
-
+	visible var1
 KTHXBYE
-//unexpected token , VARIDENt visible
+//unexpected token, VARIDENT visible
 
 ============================================
-HAI 
-
-visible R 1
-
-KTHXBYE
-
-//visible is not defined
 
 
