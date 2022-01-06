@@ -288,6 +288,10 @@ input[type="file"] {
 	font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
+.logo {
+	margin-bottom: -10px;
+	height: 70px;
+}
 
 /* CUSTOM SCROLLBAR COLORS */
 /* derived from https://www.digitalocean.com/community/tutorials/css-scrollbars */
